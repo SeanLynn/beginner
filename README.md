@@ -1,1 +1,1 @@
-# Some_Solution_Of_Introduction_To_Algorithms_Third_Edition
+# Some_Solutions_Of_Introduction_To_Algorithms_Third_Edition
