@@ -2,7 +2,7 @@
 #include <vector>
 using namespace std;
 
-
+// reference: https://segmentfault.com/q/1010000004498972
 template <typename T>
 struct Matrix
 {
