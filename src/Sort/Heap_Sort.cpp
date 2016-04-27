@@ -4,7 +4,7 @@
 #include <limits.h>
 using namespace std;
 
-class Heap
+class Heap_Sort
 {
 private:
     int length;
@@ -18,15 +18,21 @@ public:
     }
     ~Heap(){}
     
+    void heap_delete(int i){
+        a[i] = a[heap_size];
+        --heap_size;
+        max_heapify_loop(i);
+    }
+
     int heap_maximum(){
         // the max element
         return array[1];
     }
 
     void max_heap_insert(int key){
-        if(add(INT_MIN)){
-            heap_increase_key(heap_size, key);
-        }
+        add(INT_MIN);
+        heap_increase_key(heap_size, key);
+        
     }
 
     int heap_extract_max(){
@@ -47,11 +53,11 @@ public:
             cout << "new key is smaller than current key" << endl;
             return ;
         }
-        array[i] = key;
-        while(i > 1 && array[parent(i)] < array[i]){
-            swap(array[parent(i)], array[i]);
+        while(i > 1 && array[parent(i)] < key){
+            array[i] = array[parent(i)];
             i = parent(i);
         }
+        array[i] = key;
     }
 
     void heap_sort(){
@@ -111,48 +117,21 @@ public:
             }
         }
     }
-
-    //6.2-2 MIN-HEAPIFY(int)
-    void min_heapify(int i){
-        int l = left(i);
-        int r = right(i);
-        int least;
-        // least = the index of min(array[i], array[l], array[r])
-        if(l <= heap_size && array[i] < array[i]){
-            least = l;
-        }else{
-            least = i;
-        }
-        if(r <= heap_size && array[r] < array[least]){
-            least = r;
-        }
-
-        if(least != i){
-            int temp = array[i];
-            array[i] = array[least];
-            array[least] = temp;
-            min_heapify(least);
-        }
-    }
-
     //6.3
     void build_max_heap(){
         for(int i = heap_size/2; i > 0; --i){
-            max_heapify_loop(i);
+            max_heapify_loop(i); 
         }
     }
 
-    //for initialize the vector
-    bool add(int data){
-        if(heap_size<length){
-            ++heap_size;
-            array[heap_size] = data;
-            return true;
-        }else{
-            //the exception can be handled by resize the length of the heap
-            cout << "heap is full!" << endl;
-            return false;
+    //add data on the tail of the heap;
+    void add(int data){
+        if(heap_size>=length){
+            array.resize(2*length);
+            length <<= 1;
         }
+        ++heap_size;
+        array[heap_size] = data;
     }
 
     void print(){
