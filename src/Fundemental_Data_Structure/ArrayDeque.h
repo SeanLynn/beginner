@@ -1,11 +1,13 @@
 #include <iostream>
 #include <memory>
+#include <limits.h>
 using namespace std;
 
 class ArrayDeque
 {
 public:
     ArrayDeque(int capacity = 20);
+    ArrayDeque(initializer_list<int> a, int capacity = 20);
     ~ArrayDeque() {}
     bool empty();
     bool full();
@@ -26,6 +28,17 @@ ArrayDeque::ArrayDeque(int capacity) : array(new int[capacity]) {
     this->capacity = capacity;
     this->head = this->tail = this->size = 0;
 }
+
+ArrayDeque::ArrayDeque(initializer_list<int> a, int capacity)
+    : array(new int[capacity])
+{
+    this->capacity = capacity;
+    this->head = this->tail = this->size = 0;
+    for (int item : a) {
+        addTail(item);
+    }
+}
+
 
 bool ArrayDeque::empty() {
     return size == 0;
@@ -71,5 +84,16 @@ int ArrayDeque::removeTail() {
     if (empty()) {
         cerr << "The array queue is empty." << endl;
         return INT_MIN;
+    } else {
+        tail = tail == 0 ? capacity - 1 : tail - 1;
+        size--;
+        return array[tail];
     }
+}
+
+void ArrayDeque::printAll() {
+    for (int i = 0; i < size; i++) {
+        cout << array[(head + i) % capacity] << ' ';
+    }
+    cout << endl;
 }
