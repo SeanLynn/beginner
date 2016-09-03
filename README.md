@@ -1,2 +1,2 @@
-# Some_Solutions_And_Practice_Of_Introduction_To_Algorithms_Third_Edition
-__cpp_implementation
+C++ implementation of CLRS 3e 
+
