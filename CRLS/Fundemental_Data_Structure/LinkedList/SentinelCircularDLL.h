@@ -52,12 +52,12 @@ void SentinelCircularDLL<T>::_delete(T x) {
     delete key;
 }
 
+//the solution to CLRS 10.2-4
 template <typename T>
 DLLNode<T>* SentinelCircularDLL<T>::search(T x) {
+    this->nil->setKey(x);
     DLLNode<T>* key = this->nil->getNextNode();
-    while (key != this->nil) {
-        if (key->getKey() == x)
-            break;
+    while (key->getKey() != x) {
         key = key->getNextNode();
     }
     if (key == this->nil)
