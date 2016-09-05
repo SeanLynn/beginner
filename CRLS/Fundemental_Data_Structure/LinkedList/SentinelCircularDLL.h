@@ -14,7 +14,19 @@ public:
     DLLNode<T>* search(T x);
     void printAll();
     void printAllInverse();
+    ~SentinelCircularDLL();
 };
+
+template <typename T>
+SentinelCircularDLL<T>::~SentinelCircularDLL() {
+    DLLNode<T>* key = this->nil->getNextNode();
+    while (key != this->nil) {
+        DLLNode<T>* temp = key->getNextNode();
+        delete key;
+        key = temp;
+    }
+    delete key;
+}
 
 template <typename T>
 SentinelCircularDLL<T>::SentinelCircularDLL() {

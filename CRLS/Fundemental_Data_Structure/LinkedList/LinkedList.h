@@ -23,6 +23,7 @@ private:
     LLNode<T>* tail; //use for queue
 public:
     LinkedList(LLNode<T>* h = nullptr, LLNode<T>* t = nullptr) : head(h), tail(head) {}
+    ~LinkedList();
     void insert(T x);
     void enqueue(T x);
     void dequeue();
@@ -32,6 +33,19 @@ public:
     void _delete(T x);
     LLNode<T>* search(T x);
 };
+
+template <typename T>
+LinkedList<T>::~LinkedList() {
+    LLNode<T>* key = head;
+    if (!key) {
+        return ;
+    }
+    while (key) {
+        LLNode<T>* temp = key->getNextNode();
+        delete key;
+        key = temp;
+    }
+}
 
 template <typename T>
 void LinkedList<T>::dequeue() {

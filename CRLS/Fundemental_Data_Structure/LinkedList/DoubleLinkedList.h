@@ -17,7 +17,6 @@ public:
     DLLNode<T>* getNextNode() {return next;}
     void setKey(T k) {key = k;}
     T getKey() {return key;}
-
 };
 
 template <typename T>
@@ -32,12 +31,26 @@ class DoubleLinkedList {
 private:
     DLLNode<T>* head;
 public:
-    void insert(T x);
     DoubleLinkedList(DLLNode<T>* h = nullptr): head(h) {}
+    ~DoubleLinkedList();
+    void insert(T x);
     void printAll();
     void _delete(T x);
     DLLNode<T>* search(T x);
 };
+
+template <typename T>
+DoubleLinkedList<T>::~DoubleLinkedList() {
+    if (!this->head) {
+        return ;
+    }
+    DLLNode<T>* key = this->head->getNextNode();
+    while (key) {
+        DLLNode<T>* temp = key->getNextNode();
+        delete key;
+        temp = key;
+    }
+}
 
 template <typename T>
 DLLNode<T>* DoubleLinkedList<T>::search(T x) {
