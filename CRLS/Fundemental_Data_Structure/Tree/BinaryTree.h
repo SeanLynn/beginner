@@ -2,23 +2,102 @@
 #include <stack>
 template <typename T>
 class BinaryTree {
-private:
+protected:
     TreeNode<T>* root;
     void pre_order(TreeNode<T>* r);
     void in_order(TreeNode<T>* r);
     void post_order(TreeNode<T>* r);
     void post_order_destructor(TreeNode<T>* r);
-    TreeNode<T>* successor(TreeNode<T>* t);
+    TreeNode<T>* search_(TreeNode<T>* t, const T& x);
 public:
+    TreeNode<T>* successor(TreeNode<T>* t);
     BinaryTree(TreeNode<T>* r = nullptr): root(r) {}
     ~BinaryTree();
-    void insert(T x);
+    void insert(const T& x);
     void preOrder();
     void inOrder();
     void postOrder();
     void traversalUseStack();
     void traversalNonRecursion();
+    TreeNode<T>* search(const T& x);
+    TreeNode<T>* searchNonRecursion(const T& x);
+    TreeNode<T>* minimum();
+    TreeNode<T>* maximum();
+    TreeNode<T>* predecessor(TreeNode<T>* t);
 };
+
+template <typename T>
+TreeNode<T>* BinaryTree<T>::predecessor(TreeNode<T>* t) {
+    if (t) {
+        if (t->getLeftNode()) {
+            t = t->getLeftNode();
+            while (t->getRightNode()) {
+                t = t->getRightNode();
+            }
+        } else {
+            TreeNode<T>* temp = t->getParent();
+            while (temp && t == temp->getLeftNode()) {
+                t = temp;
+                temp = temp->getParent();
+            }
+            t = temp;
+        }
+    }
+    return t;
+}
+
+template <typename T>
+TreeNode<T>* BinaryTree<T>::maximum() {
+    TreeNode<T>* temp = this->root;
+    if (temp) {
+        while (temp->getRightNode()) {
+            temp = temp->getRightNode();
+        }
+    }
+    return temp;
+}
+
+template <typename T>
+TreeNode<T>* BinaryTree<T>::minimum() {
+    TreeNode<T>* temp = this->root;
+    if (temp) {
+        while (temp->getLeftNode()) {
+            temp = temp->getLeftNode();
+        }
+    }
+    return temp;
+}
+
+template <typename T>
+TreeNode<T>* BinaryTree<T>::searchNonRecursion(const T& x) {
+    TreeNode<T>* temp = this->root;
+    while (temp && temp->getKey() == x) {
+        if (x < temp->getKey()) {
+            x = temp->getLeftNode();
+        } else {
+            x = temp->getRightNode();
+        }
+    }
+    return temp;
+}
+
+template <typename T>
+TreeNode<T>* BinaryTree<T>::search(const T& x) {
+    return search_(this->root, x);
+}
+
+template <typename T>
+TreeNode<T>* BinaryTree<T>::search_(TreeNode<T>* t, const T& x) {
+    if (!t || t->getKey() == x) {
+        return t;
+    }
+    if (t->getKey() > x) {
+        return this->search_(t->getLeftNode(), x);
+    } else {
+        return this->search_(t->getRightNode(), x);
+    }
+}
+
 
 template <typename T>
 TreeNode<T>* BinaryTree<T>::successor(TreeNode<T>* t) {
@@ -28,18 +107,13 @@ TreeNode<T>* BinaryTree<T>::successor(TreeNode<T>* t) {
             while (t->getLeftNode()) {
                 t = t->getLeftNode();
             }
-        } else if (t == this->root) {
-            return nullptr;
-        } else if (t->getParent()->getLeftNode() == t) {
-            t = t->getParent();
         } else {
-            while (t->getParent() && t->getParent()->getRightNode() == t) {
-                t = t->getParent();
+            TreeNode<T>* temp = t->getParent();
+            while (temp && t == temp->getRightNode()) {
+                t = temp;
+                temp = temp->getParent();
             }
-            if (!t->getParent()) {
-                return nullptr;
-            }
-            t = t->getParent();
+            t = temp;
         }
     }
     return t;
@@ -57,6 +131,7 @@ void BinaryTree<T>::traversalNonRecursion() {
             current = this->successor(current);
         }
     }
+    cout << endl;
 }
 
 template <typename T>
@@ -144,7 +219,7 @@ void BinaryTree<T>::pre_order(TreeNode<T>* r) {
 }
 
 template <typename T>
-void BinaryTree<T>::insert(T x) {
+void BinaryTree<T>::insert(const T& x) {
     if (!this->root) {
         this->root = new TreeNode<T>(x);
         return ;
