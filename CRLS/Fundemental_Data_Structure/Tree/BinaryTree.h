@@ -9,8 +9,12 @@ protected:
     void post_order(TreeNode<T>* r);
     void post_order_destructor(TreeNode<T>* r);
     TreeNode<T>* search_(TreeNode<T>* t, const T& x);
+    bool isRoot(T& x) {return this->root ? this->root->getKey() == x : false;}
+    bool isLeftNode(TreeNode<T>* r) {return r ? ( r->getParent() ? ( r->getParent()->getLeftNode() == r) : false) : false;}
+    bool isRightNode(TreeNode<T>* r) {return r ? ( r->getParent() ? ( r->getParent()->getRightNode() == r) : false) : false;}
+    void transplant(TreeNode<T>* v, TreeNode<T>* u); //v replace u
+    TreeNode<T>* minimum(TreeNode<T>* r);
 public:
-    TreeNode<T>* successor(TreeNode<T>* t);
     BinaryTree(TreeNode<T>* r = nullptr): root(r) {}
     ~BinaryTree();
     void insert(const T& x);
@@ -21,10 +25,95 @@ public:
     void traversalNonRecursion();
     TreeNode<T>* search(const T& x);
     TreeNode<T>* searchNonRecursion(const T& x);
-    TreeNode<T>* minimum();
+    TreeNode<T>* minimum() {return minimum(this->root);}
     TreeNode<T>* maximum();
+    TreeNode<T>* successor(TreeNode<T>* t);
     TreeNode<T>* predecessor(TreeNode<T>* t);
+    void deleteNode(T& x);
+    void deleteNodeUsingTransplant(T& x);
 };
+
+template <typename T>
+void BinaryTree<T>::deleteNodeUsingTransplant(T& x) {
+    TreeNode<T>* key = this->searchNonRecursion(x);
+    if (!key) {
+        return ;
+    }
+    if (!key->getLeftNode()) {
+        this->transplant(key->getRightNode(), key);
+    } else if (!key->getRightNode()) {
+        this->transplant(key->getLeftNode(), key);
+    } else {
+        TreeNode<T>* temp = this->minimum(key->getRightNode());
+        if (temp->getParent() != key) {
+            this->transplant(temp->getRightNode(), temp);
+            temp->setRightNode(key->getRightNode());
+            temp->getRightNode()->setParent(temp);
+        }
+        this->transplant(temp, key);
+        temp->setLeftNode(key->getLeftNode());
+        temp->getLeftNode()->setParent(temp);
+    }
+    delete key;
+}
+
+
+template <typename T>
+void BinaryTree<T>::transplant(TreeNode<T>* v, TreeNode<T>* u) { //v replace u
+    if (!u->getParent()) {
+        this->root = v;
+    } else if (this->isLeftNode(u)) {
+        u->getParent()->setLeftNode(v);
+    } else {
+        u->getParent()->setRightNode(v);
+    }
+    if (v) {
+        v->setParent(u->getParent());
+    }
+}
+
+template <typename T>
+void BinaryTree<T>::deleteNode(T& x) {
+    TreeNode<T>* key = this->searchNonRecursion(x);
+    if (!key) {
+        return ;
+    }
+    if (!key->getLeftNode()) {
+        if (this->root == key) {
+            this->root = key->getRightNode();
+        } else {
+            this->isLeftNode(key) ? key->getParent()->setLeftNode(key->getRightNode()) : key->getParent()->setRightNode(key->getRightNode());
+        }
+        key->getRightNode()->setParent(key->getParent());
+    } else if (!key->getRightNode()) {
+        if (this->root == key) {
+            this->root = key->getLeftNode();
+        } else {
+            this->isLeftNode(key) ? key->getParent()->setLeftNode(key->getLeftNode()) : key->getParent()->setRightNode(key->getLeftNode());
+        }
+        key->getLeftNode()->setParent(key->getParent());
+    } else {
+        TreeNode<T>* next = this->successor(key);
+        next->setLeftNode(key->getLeftNode());
+        next->getLeftNode()->setParent(next);
+        if (next != key->getRightNode()) {
+            next->getParent()->setLeftNode(next->getRightNode());
+            if (next->getRightNode()) {
+                next->getRightNode()->setParent(next->getParent());
+            }
+            next->setRightNode(key->getRightNode());
+            next->getRightNode()->setParent(next);
+        }
+        if (key != this->root) {
+            this->isLeftNode(key) ? key->getParent()->setLeftNode(next) : key->getParent()->setRightNode(next);
+        } else {
+            this->root = next;
+        }
+        next->setParent(key->getParent());
+    }
+    delete key;
+}
+
 
 template <typename T>
 TreeNode<T>* BinaryTree<T>::predecessor(TreeNode<T>* t) {
@@ -58,24 +147,23 @@ TreeNode<T>* BinaryTree<T>::maximum() {
 }
 
 template <typename T>
-TreeNode<T>* BinaryTree<T>::minimum() {
-    TreeNode<T>* temp = this->root;
-    if (temp) {
-        while (temp->getLeftNode()) {
-            temp = temp->getLeftNode();
+TreeNode<T>* BinaryTree<T>::minimum(TreeNode<T>* r) {
+    if (r) {
+        while (r->getLeftNode()) {
+            r = r->getLeftNode();
         }
     }
-    return temp;
+    return r;
 }
 
 template <typename T>
 TreeNode<T>* BinaryTree<T>::searchNonRecursion(const T& x) {
     TreeNode<T>* temp = this->root;
-    while (temp && temp->getKey() == x) {
+    while (temp && temp->getKey() != x) {
         if (x < temp->getKey()) {
-            x = temp->getLeftNode();
+            temp = temp->getLeftNode();
         } else {
-            x = temp->getRightNode();
+            temp = temp->getRightNode();
         }
     }
     return temp;
@@ -101,35 +189,28 @@ TreeNode<T>* BinaryTree<T>::search_(TreeNode<T>* t, const T& x) {
 
 template <typename T>
 TreeNode<T>* BinaryTree<T>::successor(TreeNode<T>* t) {
-    if (t) {
-        if (t->getRightNode()) {
-            t = t->getRightNode();
-            while (t->getLeftNode()) {
-                t = t->getLeftNode();
-            }
-        } else {
-            TreeNode<T>* temp = t->getParent();
-            while (temp && t == temp->getRightNode()) {
-                t = temp;
-                temp = temp->getParent();
-            }
+    if (!t) {
+        return t;
+    }
+    if (t->getRightNode()) {
+        t = this->minimum(t->getRightNode());
+    } else {
+        TreeNode<T>* temp = t->getParent();
+        while (temp && t == temp->getRightNode()) {
             t = temp;
+            temp = temp->getParent();
         }
+        t = temp;
     }
     return t;
 }
 
 template <typename T>
 void BinaryTree<T>::traversalNonRecursion() {
-    if (this->root) {
-        TreeNode<T>* current = this->root;
-        while (current->getLeftNode()) {
-            current = current->getLeftNode();
-        }
-        while (current) {
-            cout << current->getKey() << ' ';
-            current = this->successor(current);
-        }
+    TreeNode<T>* current = this->minimum();
+    while (current) {
+        cout << current->getKey() << ' ';
+        current = this->successor(current);
     }
     cout << endl;
 }
@@ -220,28 +301,22 @@ void BinaryTree<T>::pre_order(TreeNode<T>* r) {
 
 template <typename T>
 void BinaryTree<T>::insert(const T& x) {
-    if (!this->root) {
-        this->root = new TreeNode<T>(x);
-        return ;
-    }
     TreeNode<T>* current = this->root;
-    while (true) {
+    TreeNode<T>* currentP = nullptr;
+    while (current) {
+        currentP = current;
         if (current->getKey() > x) {
-            if (current->getLeftNode()) {
-                current = current->getLeftNode();
-            } else {
-                TreeNode<T>* key = new TreeNode<T>(x, current);
-                current->setLeftNode(key);
-                break;
-            }
+            current = current->getLeftNode();
         } else {
-            if (current->getRightNode()) {
-                current = current->getRightNode();
-            } else {
-                TreeNode<T>* key = new TreeNode<T>(x, current);
-                current->setRightNode(key);
-                break;
-            }
+            current = current->getRightNode();
         }
+    }
+    TreeNode<T>* newNode = new TreeNode<T>(x, currentP);
+    if (!currentP) {
+        this->root = newNode;
+    } else if (currentP->getKey() > x) {
+        currentP->setLeftNode(newNode);
+    } else {
+        currentP->setRightNode(newNode);
     }
 }
