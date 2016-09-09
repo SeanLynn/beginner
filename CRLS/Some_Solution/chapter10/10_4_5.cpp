@@ -11,5 +11,12 @@ int main(int argc, char const *argv[])
     tree.insert(121);
     tree.insert(9);
     tree.traversalNonRecursion();
+    int i;
+    i = 10;
+    tree.deleteNodeUsingTransplant(i);
+    tree.traversalNonRecursion();
+    i = 21;
+    tree.deleteNodeUsingTransplant(i);
+    tree.traversalNonRecursion();
     return 0;
 }
