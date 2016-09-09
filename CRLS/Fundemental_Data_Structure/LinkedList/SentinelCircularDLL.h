@@ -9,13 +9,26 @@ private:
     DLLNode<T>* nil;
 public:
     SentinelCircularDLL();
+    ~SentinelCircularDLL();
     void insert(T x);
     void _delete(T x);
     DLLNode<T>* search(T x);
+    void link(SentinelCircularDLL<T>* anDLL);
     void printAll();
     void printAllInverse();
-    ~SentinelCircularDLL();
+    DLLNode<T>* getNil() {return this->nil;}
 };
+
+template <typename T>
+void SentinelCircularDLL<T>::link(SentinelCircularDLL<T> *anDLL) {
+    DLLNode<T>* anNil = anDLL->getNil();
+    this->nil->getPrecNode()->setNextNode(anNil->getNextNode());
+    anNil->getNextNode()->setPrecNode(this->nil->getPrecNode());
+    this->nil->setPrecNode(anNil->getPrecNode());
+    anNil->getPrecNode()->setNextNode(this->nil);
+    anNil->setNextNode(anNil);
+    anNil->setPrecNode(anNil);
+}
 
 template <typename T>
 SentinelCircularDLL<T>::~SentinelCircularDLL() {

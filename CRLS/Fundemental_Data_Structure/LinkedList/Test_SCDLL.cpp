@@ -19,5 +19,13 @@ int main(int argc, char const *argv[])
     } else {
         cerr << "This Linked List doesn't have 13" << endl;
     }
+    SentinelCircularDLL<int> anoScdll;
+    anoScdll.insert(99);
+    anoScdll.insert(98);
+    anoScdll.insert(97);
+    anoScdll.insert(96);
+    scdll.link(&anoScdll);
+    scdll.printAll();
+    scdll.printAllInverse();
     return 0;
 }

@@ -32,14 +32,31 @@ public:
     void printAll();
     void _delete(T x);
     LLNode<T>* search(T x);
+    void inverse();
 };
+
+//write for 10.2-7
+template <typename T>
+void LinkedList<T>::inverse() {
+    if (this->head && this->head->getNextNode()) {
+        LLNode<T>* current = this->head;
+        LLNode<T>* next = current->getNextNode();
+        this->head->setNextNode(nullptr);
+        while (next) {
+            current = next;
+            next = current->getNextNode();
+            current->setNextNode(this->head);
+            this->head = current;
+        }
+    }
+}
 
 template <typename T>
 LinkedList<T>::~LinkedList() {
-    LLNode<T>* key = head;
-    if (!key) {
+    if (!this->head) {
         return ;
     }
+    LLNode<T>* key = this->head;
     while (key) {
         LLNode<T>* temp = key->getNextNode();
         delete key;

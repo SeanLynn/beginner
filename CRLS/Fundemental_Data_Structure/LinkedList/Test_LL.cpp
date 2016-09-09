@@ -17,5 +17,7 @@ int main(int argc, char const *argv[])
     } else {
         cerr << "This linked list doesn't have 12" << endl;
     }
+    ll.inverse();
+    ll.printAll();
     return 0;
 }
