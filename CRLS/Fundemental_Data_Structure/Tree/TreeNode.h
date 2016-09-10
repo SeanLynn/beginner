@@ -2,7 +2,7 @@
 using namespace std;
 template <typename T>
 class TreeNode {
-private:
+protected:
     T key;
     TreeNode<T>* parent;
     TreeNode<T>* left;
