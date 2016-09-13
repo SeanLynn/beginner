@@ -14,7 +14,9 @@ private:
 	void rightRotate(RBNode<T>* right);
 	void insertFixup(RBNode<T>* newNode);
 	void postOrderDestruction(RBNode<T>* r);
-	bool isLeftNode(RBNode<T>* r) { return r != nil&&r->getParent() != nil ? r->getParent()->getLeftNode() == r : false; }
+	bool isLeftNode(RBNode<T>* r) { return r->getParent() != nil ? r->getParent()->getLeftNode() == r : false; }
+	void transplant(RBNode<T>* u, RBNode<T>* v);//v replace u
+	void deleteFixUp(RBNode<T>* x);
 public:
 	RBTree(RBNode<T>* r = nullptr, RBNode<T>* n = nullptr) {
 		nil = new RBNode<T>(BLACK);
@@ -27,6 +29,7 @@ public:
 	RBNode<T>* maximum();
 	void insert(const T& x);
 	void inOrder();
+	void deleteNode(const T& x);
 };
 
 template<typename T>
@@ -126,6 +129,100 @@ template<typename T>
 inline void RBTree<T>::inOrder()
 {
 	this->in_order(this->root);
+	cout << endl;
+}
+
+template<typename T>
+inline void RBTree<T>::deleteNode(const T & xl)
+{
+	RBNode<T>* x;
+	RBNode<T>* z = this->search(xl); //the node I want to delete
+	RBNode<T>* y = z;
+	RBColor ycolor = y->getColor();
+	if (z->getLeftNode() == this->nil) {
+		x = z->getRightNode();
+		this->transplant(z, x);
+	}
+	else if (z->getRightNode() == this->nil) {
+		x = z->getLeftNode();
+		this->transplant(z, x);
+	}
+	else {
+		y = this->minumum(z->getRightNode());
+		ycolor = y->getColor();
+		x = y->getRightNode();
+		if (y->getParent() == z) {
+			x->setParent(y);//??
+		}
+		else {
+			this->transplant(y, y->getRightNode());
+			y->setRightNode(z->getRightNode());
+			y->getRightNode()->setParent(y);
+		}
+		this->transplant(z, y);
+		y->setLeftNode(z->getLeftNode());
+		y->getLeftNode()->setParent(y);
+		y->setColor(z->getColor());
+	}
+	if (ycolor == BLACK) {
+		this->deleteFixUp(x);
+	}
+}
+
+template<typename T>
+inline void RBTree<T>::deleteFixUp(RBNode<T>* x)
+{
+	while (x != this->root && x->getColor() == BLACK) {
+		if (this->isLeftNode(x)) {
+			RBNode<T>* w = x->getParent()->getRightNode();
+			if (w->getColor() == RED) {
+				w->setColor(BLACK);
+				x->getParent()->setColor(RED);
+				this->leftRotate(x->getParent());
+				w = x->getParent()->getRightNode();
+			}
+			if (w->getLeftNode()->getColor() == BLACK && w->getRightNode()->getColor() == BLACK) {
+				w->setColor(RED);
+				x = x->getParent();
+			}
+			else if (w->getRightNode()->getColor() == BLACK) {
+				w->getLeftNode()->setColor(BLACK);
+				w->setColor(RED);
+				this->rightRotate(w);
+				w = x->getParent()->getRightNode();
+			}
+			w->setColor(x->getParent()->getColor());
+			x->getParent()->setColor(BLACK);
+			w->getRightNode()->setColor(BLACK);
+			this->leftRotate(x->getParent());
+			x = this->root;
+		}
+		else {
+			RBNode<T>* w = x->getParent()->getLeftNode();
+			if (w->getColor() == RED) {
+				w->setColor(BLACK);
+				x->getParent()->setColor(RED);
+				this->rightRotate(x->getParent());
+				w = x->getParent()->getLeftNode();
+			}
+			if (w->getRightNode()->getColor() == BLACK && w->getLeftNode()->getColor() == BLACK) {
+				w->setColor(RED);
+				x = x->getParent();
+			}
+			else if (w->getLeftNode()->getColor() == BLACK) {
+				w->getRightNode()->setColor(BLACK);
+				w->setColor(RED);
+				this->leftRotate(w);
+				w = x->getParent()->getLeftNode();
+			}
+			w->setColor(x->getParent()->getColor());
+			x->getParent()->setColor(BLACK);
+			w->getLeftNode()->setColor(BLACK);
+			this->rightRotate(x->getParent());
+			x = this->root;
+		}
+	}
+	x->setColor(BLACK);
 }
 
 template<typename T>
@@ -251,4 +348,19 @@ inline void RBTree<T>::postOrderDestruction(RBNode<T>* r)
 		postOrderDestruction(r->getRightNode());
 		delete r;
 	}
+}
+
+template<typename T>
+inline void RBTree<T>::transplant(RBNode<T>* u, RBNode<T>* v)
+{
+	if (u->getParent() == this->nil) {
+		this->root = v;
+	}
+	else if (this->isLeftNode(u)) {
+		u->getParent()->setLeftNode(v);
+	}
+	else {
+		u->getParent()->setRightNode(v);
+	}
+	v->setParent(u->getParent());
 }
