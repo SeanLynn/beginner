@@ -12,15 +12,45 @@ private:
 	BNode<T>* root;
 	pair<BNode<T>*, T&>* search(BNode<T>* b, T& k);
 	void splitChild(BNode<T>* p, int i);
-	void insertNotFull(BNode<T>* b, T& k);
+	void insertNotFull(BNode<T>* b, const T& k);
+	void inOrder(BNode<T>* b);
 public:
 	BTree() : root(new BNode<T>()) {}
 	pair<BNode<T>*, T&>* search(T& k) { return search(root, k); }
-	void insert(T& k);
+	void insert(const T& k);
+	void inOrder();
 };
 
 template<typename T>
-inline void BTree<T>::insertNotFull(BNode<T>* p, T & k)
+inline void BTree<T>::inOrder()
+{
+	if (root) {
+		inOrder(root);
+	}
+	cout << endl;
+}
+
+template<typename T>
+inline void BTree<T>::inOrder(BNode<T>* b)
+{
+	if (b->isLeaf()) {
+		for (int j = 0; j < b->getCount(); j++) {
+			cout << b->getKey(j) << ' ';
+		}
+	}
+	else {
+		int i;
+		for (i = 0; i < b->getCount(); i++) {
+			inOrder(b->getChild(i));
+			cout << b->getKey(i) << ' ';
+		}
+		inOrder(b->getChild(i));
+	}
+
+}
+
+template<typename T>
+inline void BTree<T>::insertNotFull(BNode<T>* p, const T & k)
 {
 	int i = p->getCount() - 1;
 	if (p->isLeaf()) {
@@ -57,7 +87,7 @@ inline void BTree<T>::splitChild(BNode<T>* p, int i)
 		right->setKey(j, left->getKey(j + BNode<T>::degree / 2));
 	}
 	if (!left->isLeaf()) {
-		for (int j = 0; j < BNode<T>::degree/2; j++) {
+		for (int j = 0; j < BNode<T>::degree / 2; j++) {
 			right->setChild(j, left->getChild(j + BNode<T>::degree / 2));
 		}
 	}
@@ -65,22 +95,22 @@ inline void BTree<T>::splitChild(BNode<T>* p, int i)
 	for (int j = p->getCount(); j >= i + 1; j--) {
 		p->setChild(j + 1, p->getChild(j));
 	}
-	p->setChild(i + 1, z);
-	for (int j = p->getCount()-1; j >= 0; j--) {
+	p->setChild(i + 1, right);
+	for (int j = p->getCount() - 1; j >= i; j--) {
 		p->setKey(j + 1, p->getKey(j));
 	}
-	p->setKey(i, left->getKey(BNode<T>::degree / 2 - 1);
+	p->setKey(i, left->getKey(BNode<T>::degree / 2 - 1));
 	p->addCount();
 }
 
 template<typename T>
-inline void BTree<T>::insert(T & k)
+inline void BTree<T>::insert(const T & k)
 {
 	BNode<T>* cur = root;
-	if (cur->getCount() == BNode<T>::degree - 1;) {
+	if (cur->getCount() == BNode<T>::degree - 1) {
 		BNode<T>* newRoot = new BNode<T>();
 		root = newRoot;
-		newRoot->setLeaf(true);
+		newRoot->setLeaf(false);
 		newRoot->setChild(0, cur);
 		splitChild(newRoot, 0);
 		insertNotFull(newRoot, k);
