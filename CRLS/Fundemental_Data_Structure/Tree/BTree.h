@@ -2,10 +2,7 @@
 #include "BNode.h"
 #include <iostream>
 #include <utility>
-using std::cout;
-using std::endl;
-using std::make_pair;
-using std::pair;
+using namespace std;
 template <typename T>
 class BTree {
 private:
@@ -14,12 +11,166 @@ private:
 	void splitChild(BNode<T>* p, int i);
 	void insertNotFull(BNode<T>* b, const T& k);
 	void inOrder(BNode<T>* b);
+	void postDestruction(BNode<T>* b);
+	void deleteNode(const T& k, BNode<T>* b);
+	T & maximum(BNode<T>* b);
+	T & minimum(BNode<T>* b);
 public:
 	BTree() : root(new BNode<T>()) {}
+	~BTree() { postDestruction(root); root = nullptr; }
 	pair<BNode<T>*, T&>* search(T& k) { return search(root, k); }
 	void insert(const T& k);
 	void inOrder();
+	void deleteNode(const T& k);
 };
+
+template<typename T>
+inline T & BTree<T>::minimum(BNode<T>* b){
+	while(!b->isLeaf() && b = b->getChild(0)) ;
+	return b->getKey(0);
+}
+
+template<typename T>
+inline T & BTree<T>::maximum(BNode<T>* b)
+{
+	// TODO: 在此处插入 return 语句
+	while (!b->isLeaf() && b = b->getChild(b->getCount()));
+	return b->getKey(b->getCount()-1);
+}
+
+template<typename T>
+void BTree<T>::deleteNode(const T & k, BNode<T>* b)
+{
+	size_t i = 0;
+	size_t currn = b->getCount();
+	while (i < currn && b->getKey(i) != k) {
+		i++;
+	}
+	if (i == currn) { //case 3
+		i = 0;
+		while (i < currn && b->getKey(i) < k) {
+			i++;
+		}
+		auto left = b->getChild(i);
+		auto leftn = left->getCount();
+		if(leftn < BNode<T>::degree/2){
+			if(i != 0 && b->getChild(i-1)->getCount() >= BNode<T>::degree/2){
+				auto lleftN = b->getChild(i-1);
+				left->setChild(leftn+1, left->getChild(leftn));
+				for(size_t j = leftn; j > 0; j--){
+					left->setKey(j, left->getKey(j-1));
+					left->setChild(j, left->getChild(j-1));
+				}
+				left->setKey(0, b->getKey(i-1));
+				b->setKey(i-1, lleftN->getKey(lleftN->getCount()-1));
+				left->setChild(0, lleftN->getChild(lleftN->getCount()));
+				lleftN->cutCount();
+				left->addCount();
+				deleteNode(k, left);
+			}else if(i != currn && b->getChild(i+1)->getCount() >= BNode<T>::degree/2){
+				auto right = b->getChild(i+1);
+				auto rightn = right->getCount();
+				left->setKey(leftn, b->getKey(i));
+				left->addCount();
+				left->setChild(leftn+1, right->getChild(0));
+				b->setKey(i, right->getKey(0));
+				for(size_t j = 0; j < rightn-1; j++){
+					right->setKey(j, right->getKey(j+1));
+					right->setChild(j, right->getChild(j+1));
+				}
+				right->setChild(rightn-1, right->getChild(rightn));
+				right->cutCount();
+				deleteNode(k, left);
+			}else{
+				if(i != currn){
+					left->setKey(leftn, b->getKey(i-1));
+					auto right = b->getChild(i+1);
+					auto rightn = right->getCount();
+					for(size_t j = 0; j < rightn; j++){
+						left->setKey(leftn+1+j, right->getKey(j));
+						left->setChild(leftn++1+j, right->getChild(j));
+					}
+					left->setChild(leftn+rightn+1, right->getChild(rightn));
+					delete right;
+					for(size_t j = i; j < currn-1; j++){
+						b->setKey(j, b->getKey(j+1));
+						b->setChild(j+1, b->getChild(j+2));
+					}
+					b->cutCount();
+					left->setCount(leftn+1+rightn);
+					deleteNode(k, left);
+				}else{
+					auto lleftN = b->getChild(i-1);
+					auto lleftNn = lleftN->getCount();
+					lleftN->setKey(lleftNn, b->getKey(i-1));
+					for(size_t j = 0; j < leftn; j++){
+						lleftN->setKey(lleftNn+1+j, left->getKey(j));
+						left->setChild(leftn++1+j, left->getChild(j));
+					}
+					lleftN->setChild(lleftNn+leftn+1, left->getChild(leftn));
+					delete left;
+					b->cutCount();
+					lleftN->setCount(lleftNn+1+leftn);
+					deleteNode(k, lleftN);
+				}
+			}
+		}
+	}
+	if (b->isLeaf()) { //case 1
+		while (i < currn) {
+			b->setKey(i, b->getKey(i + 1));
+		}
+		b->cutCount();
+	}
+	else  {//case 2
+		if (b->getChild(i)->getCount() >= BNode<T>::degree / 2) {
+			T& pre = maximum(b->getChild(i));
+			b->setKey(i, pre);
+			deleteNode(pre, b->getChild(i));
+		}else if(b->getChild(i+1)->getCount() >= BNode<T>::degree/2){
+			T& succ = minimun(b->getChild(i+1));
+			b->setKey(i, succ);
+			deleteNode(succ, b->getChild(i+1));
+		}else{
+			auto leftNode = b->getChild(i);
+			auto rightNode = b->getChild(i+1);
+			size_t leftn = leftNode->getCount();
+			size_t rightn = rightNode->getCount();
+			leftNode->setKey(leftn, k);
+			for(size_t j = 0; j < rightn; j++){
+				leftNode->setKey(leftn+1+j, rightNode->getKey(j));
+			}
+			for(size_t j = i; j < currn-1; j++){
+				b->setKey(j, b->getKey(j+1));
+			}
+			for(size_t j = i+1; j < currn; j++){
+				b->setChild(j, b->getChild(j+1));
+			}
+			delete rightNode;
+			deleteNode(k, leftNode);
+		}
+	}
+}
+
+template<typename T>
+inline void BTree<T>::deleteNode(const T & k)
+{
+	if (root) {
+		deleteNode(k, root);
+	}
+}
+
+template<typename T>
+inline void BTree<T>::postDestruction(BNode<T>* b)
+{
+	if (!b->isLeaf()) {
+		size_t n = b->getCount();
+		for (size_t i = 0; i <= n; i++) {
+			postDestruction(b->getChild(i));
+		}
+	}
+	delete b;
+}
 
 template<typename T>
 inline void BTree<T>::inOrder()
@@ -31,7 +182,7 @@ inline void BTree<T>::inOrder()
 }
 
 template<typename T>
-inline void BTree<T>::inOrder(BNode<T>* b)
+void BTree<T>::inOrder(BNode<T>* b)
 {
 	if (b->isLeaf()) {
 		for (int j = 0; j < b->getCount(); j++) {
@@ -50,7 +201,7 @@ inline void BTree<T>::inOrder(BNode<T>* b)
 }
 
 template<typename T>
-inline void BTree<T>::insertNotFull(BNode<T>* p, const T & k)
+void BTree<T>::insertNotFull(BNode<T>* p, const T & k)
 {
 	int i = p->getCount() - 1;
 	if (p->isLeaf()) {
@@ -77,7 +228,7 @@ inline void BTree<T>::insertNotFull(BNode<T>* p, const T & k)
 }
 
 template<typename T>
-inline void BTree<T>::splitChild(BNode<T>* p, int i)
+void BTree<T>::splitChild(BNode<T>* p, int i)
 {
 	BNode<T>* right = new BNode<T>();
 	BNode<T>* left = p->getChild(i);
@@ -104,7 +255,7 @@ inline void BTree<T>::splitChild(BNode<T>* p, int i)
 }
 
 template<typename T>
-inline void BTree<T>::insert(const T & k)
+void BTree<T>::insert(const T & k)
 {
 	BNode<T>* cur = root;
 	if (cur->getCount() == BNode<T>::degree - 1) {
@@ -121,7 +272,7 @@ inline void BTree<T>::insert(const T & k)
 }
 
 template<typename T>
-inline pair<BNode<T>*, T&>* BTree<T>::search(BNode<T>* b, T & k)
+pair<BNode<T>*, T&>* BTree<T>::search(BNode<T>* b, T & k)
 {
 	int i = 0;
 	while (i<b->getCount() && k > b->getKey(i)) {
