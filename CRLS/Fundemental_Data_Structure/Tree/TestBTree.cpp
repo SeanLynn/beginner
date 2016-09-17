@@ -17,6 +17,9 @@ int main()
 	tree.insert(43);
 	tree.insert(27);
 	tree.insert(82);
+	tree.insert(112);
+	tree.inOrder();
+	tree.deleteNode(31);
 	tree.inOrder();
     return 0;
 }
