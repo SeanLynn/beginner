@@ -1,7 +1,6 @@
-// BTree.cpp : 定义控制台应用程序的入口点。
+// BTree.cpp : 锟斤拷锟斤拷锟斤拷锟斤拷台应锟矫筹拷锟斤拷锟斤拷锟斤拷锟节点。
 //
 
-#include "stdafx.h"
 #include "BTree.h"
 
 int main()
