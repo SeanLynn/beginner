@@ -1,7 +1,7 @@
 #include "touchJson.h"
 #include <assert.h>
 #include <stdlib.h> //NULL
-
+#include <string.h>
 #define EXPECT(c, ch) do { assert(*c->json == (ch)); c->json++; } while(0)
 
 touch_type touch_get_type(const touch_value* v)
@@ -37,6 +37,15 @@ static int touch_parse_ture(touch_context* c,touch_value* v){
     return TOUCH_PARSE_OK;
 }
 
+#define TOUCH_PARSE_ASSISTANT(touch_context, touch_value, expect_value)\
+    do{\
+        EXPECT(touch_context, expect_value[0]);\
+        for(int i = 0; i < strlen(expect_value)-1; i++)\
+            if(c->json[i] != expect_value[i+1])\
+                return TOUCH_PARSE_INVALID_VALUE;\
+        c->json+= strlen(expect_value)-1;\
+    }while(0);
+
 static int touch_parse_false(touch_context* c, touch_value* v){
     EXPECT(c, 'f');
     if(c->json[0]!='a' || c->json[1]!='l' || c->json[2]!='s' || c->json[3]!='e')
@@ -46,14 +55,24 @@ static int touch_parse_false(touch_context* c, touch_value* v){
     return TOUCH_PARSE_OK;
 }
 
+static int touch_parse_number(touch_context* c, touch_value* v){
+    char* end;
+    v->n = strtod(c->json, &end);
+    if(c->json == end)
+        return TOUCH_PARSE_INVALID_VALUE;
+    c->json = end;
+    v->type = TOUCH_NUMBER;
+    return TOUCH_PARSE_OK;
+}
+
 /* value = null / false / true */
 static int touch_parse_value(touch_context* c, touch_value* v) {
     switch (*c->json) {
         case 't': return touch_parse_ture(c, v);
         case 'f': return touch_parse_false(c, v);
         case 'n':  return touch_parse_null(c, v);
+        default:   return touch_parse_number(c, v);
         case '\0': return TOUCH_PARSE_EXPECT_VALUE;
-        default:   return TOUCH_PARSE_INVALID_VALUE;
     }
 }
 int touch_parse(touch_value* v, const char* json)
@@ -72,4 +91,9 @@ int touch_parse(touch_value* v, const char* json)
         }
     }
     return ret;
+}
+
+double touch_get_number(const touch_value* v){
+    assert(v != NULL && v->type == TOUCH_NUMBER);
+    return v->n;
 }

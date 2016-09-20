@@ -11,6 +11,7 @@ typedef enum{ TOUCH_NULL,
 
 //JSON value
 typedef struct{
+    double n;
     touch_type type;
 }touch_value;
 
