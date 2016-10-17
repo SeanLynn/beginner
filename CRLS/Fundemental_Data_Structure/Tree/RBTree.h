@@ -234,7 +234,7 @@ inline RBNode<T>* RBTree<T>::successor(RBNode<T>* r)
 	if (r->getRightNode() != this->nil) {
 		return this->minimum(r->getRightNode());
 	}
-	RBNode<T>* temp = t->getParent();
+	RBNode<T>* temp = r->getParent();
 	while (temp != this->nil && temp->getRightNode() == r) {
 		r = temp;
 		temp = temp->getParent();
