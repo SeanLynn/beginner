@@ -3,11 +3,8 @@
 class vertex;
 class edge {
 public:
-	edge(vertex* f, vertex* t, int d){
-		from = f;
-		to = t;
-		distance = d;
-	}
+	edge(vertex* f, vertex* t, int d)
+	: from(f), to(t), distance(d){}
 
 	vertex* getFrom() {
 		return from;

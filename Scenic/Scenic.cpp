@@ -23,6 +23,9 @@ int main()
 		case 2:
 			graph.outputGraph();
 			break;
+		case 3:
+			graph.creatTourSortGraph();
+			break;
 		default:
 			break;
 		}
