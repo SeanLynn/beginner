@@ -6,15 +6,15 @@ public:
 	edge(vertex* f, vertex* t, int d)
 	: from(f), to(t), distance(d){}
 
-	vertex* getFrom() {
+	vertex* getFrom(){
 		return from;
 	}
 
-	vertex* getTo() {
+	vertex* getTo(){
 		return to;
 	}
 
-	int getPower() {
+	const int getPower() const{
 		return distance;
 	}
 private:

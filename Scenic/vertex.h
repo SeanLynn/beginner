@@ -6,24 +6,28 @@ using namespace std;
 class vertex {
 public:
 	vertex(string n, int i) 
-		: name(n), number(i), visited(false), edgeAdj() {}
+		: name(n), number(i), visited(false), edgeAdj(new list<edge*>()) {}
 	
+	~vertex() {
+		delete edgeAdj;
+	}
+
 	void addEdge(edge* e){
-		edgeAdj.push_back(e);
+		edgeAdj->push_back(e);
 	}
 
 	vertex* getFirstAdjVertex() {
-		if (edgeAdj.front()) {
-			return edgeAdj.front()->getTo();
+		if (edgeAdj->front()) {
+			return edgeAdj->front()->getTo();
 		}
 		return nullptr;
 	}
 
-	unsigned int getNumber() {
+	unsigned int getNumber() const {
 		return number;
 	}
 
-	bool isVisited() {
+	bool isVisited() const {
 		return visited;
 	}
 
@@ -31,16 +35,23 @@ public:
 		visited = bIV;
 	}
 
-	const string& getName() {
+	const string& getName() const{
 		return name;
 	}
 
-	const list<edge*>& getEdgeAdj() {
+	const list<edge*>* getEdgeAdj() const{
 		return edgeAdj;
+	}
+
+	bool isAccessDirect(const vertex* t) {
+		for each (const auto eg in *edgeAdj)
+			if (eg->getTo() == t)
+				return true;
+		return false;
 	}
 private:
 	string name;
 	unsigned int number;
 	bool visited;
-	list<edge*> edgeAdj;
+	list<edge*>* edgeAdj;
 };

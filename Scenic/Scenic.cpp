@@ -7,8 +7,7 @@
 void welcomeWords();
 int main()
 {
-
-	distributionGraph graph;
+	distributionGraph* graph = new distributionGraph();
 	int cmd;
 	while (true) {
 		welcomeWords();
@@ -18,13 +17,16 @@ int main()
 		case 0:
 			break;
 		case 1:
-			graph.createGraph();
+			graph->createGraph();
 			break;
 		case 2:
-			graph.outputGraph();
+			graph->outputGraph();
 			break;
 		case 3:
-			graph.creatTourSortGraph();
+			graph->creatTourSortGraph();
+			break;
+		case 4:
+			graph->TopoSort();
 			break;
 		default:
 			break;
@@ -33,6 +35,7 @@ int main()
 			break;
 		Sleep(1000);
 	}
+	delete graph;
 	return 0;
 }
 
