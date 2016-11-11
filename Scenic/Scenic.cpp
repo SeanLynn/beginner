@@ -28,6 +28,8 @@ int main()
 		case 4:
 			graph->TopoSort();
 			break;
+		case 5:
+			graph->MiniDistanse();
 		default:
 			break;
 		}
