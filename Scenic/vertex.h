@@ -16,11 +16,8 @@ public:
 		edgeAdj->push_back(e);
 	}
 
-	vertex* getFirstAdjVertex() {
-		if (edgeAdj->front()) {
-			return edgeAdj->front()->getTo();
-		}
-		return nullptr;
+	const list<edge*>* getEdgeAdj() const {
+		return edgeAdj;
 	}
 
 	unsigned int getNumber() const {
@@ -37,10 +34,6 @@ public:
 
 	const string& getName() const{
 		return name;
-	}
-
-	const list<edge*>* getEdgeAdj() const{
-		return edgeAdj;
 	}
 
 	bool isAccessDirect(const vertex* t) {

@@ -14,11 +14,11 @@ public:
 		return to;
 	}
 
-	const int getPower() const{
+	const unsigned getPower() const{
 		return distance;
 	}
 private:
 	vertex* from;
 	vertex* to;
-	int distance;
+	unsigned distance;
 };

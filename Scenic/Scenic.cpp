@@ -26,10 +26,14 @@ int main()
 			graph->creatTourSortGraph();
 			break;
 		case 4:
-			graph->TopoSort();
+			graph->topoSort();
 			break;
 		case 5:
-			graph->MiniDistanse();
+			graph->miniDistanse();
+			break;
+		case 6:
+			graph->miniSpanTree();
+			break;
 		default:
 			break;
 		}

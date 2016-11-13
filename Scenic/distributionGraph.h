@@ -4,16 +4,17 @@
 #include <iostream>
 #include <fstream>
 #include <stack>
-using namespace std;
+
 class distributionGraph {
 public:
-	void MiniDistanse();			 //求两景点间的最短路径
-	void creatTourSortGraph();		 //输出导游线路图
-	void TopoSort();				 //判断导游线路图有无回路
-	void outputGraph();				 //输出图的邻接表
-	void createGraph();				 //创建图的邻接表存储
-	distributionGraph() {}			 //构造函数
-	~distributionGraph();			 //析构函数
+	void miniDistanse();	  //求两景点间的最短路径
+	void creatTourSortGraph();//输出导游线路图
+	void topoSort();		  //判断导游线路图有无回路
+	void outputGraph();		  //输出图的邻接表
+	void createGraph();		  //创建图的邻接表存储
+	void miniSpanTree();	  //输出道路修建规划图
+	distributionGraph() {}	  //构造函数
+	~distributionGraph();	  //析构函数
 private:
 	unordered_map<string ,vertex*>* vertexAdj; //名字->景点 hash表
 	vector<edge*>* pEdgeVec;                   //所有边的集合，方便析构，暂时不用C++11
@@ -24,9 +25,7 @@ private:
 	unsigned edgeNumber;                       //无向边数量，实际边*2
 	void DFSTraverse(list<vertex*>&);		   //深度优先遍历
 	bool isEdge(const string&, const string&); //判断两个顶点之间是否有直接相连的边
-	vector<string>* toposort(
-		vector<vector<unsigned>>*, vector<unsigned>*);
-											   //求有无回路,拓扑排序改编
+	void toposort(vector<int>&);            //求有无回路,拓扑排序改编
 	void findLoopUsingDFS(vector<string>&);    //遍历导游路线图求回路
 	void Adj2Mtx(vector<vector<unsigned>>&);   //邻接链表转邻接矩阵
 	bool isGraphEmpty();					   //判断图是否空
@@ -37,7 +36,42 @@ private:
 		vector<unsigned>&, vector<unsigned>&); //输出所求的最短路径
 };
 
-void distributionGraph::MiniDistanse(){
+//输出道路修建规划图
+void distributionGraph::miniSpanTree() {
+	vector<unsigned> newVertexSet(vertexNumber+1, 0);
+	vector<edge*> newEdgeSet;
+	auto& rVertexAdj = *vertexAdj;
+	auto& rVertexNames = *vertexNames;
+	newVertexSet[1] = 1;
+	while (++newVertexSet[0] < vertexNumber) {
+		
+		unsigned v, e = 32767;
+		edge* minPowerEdge = nullptr;
+		//找出起点在、终点不在新点集中，而边
+		for (unsigned i = 1; i <= vertexNumber; ++i) {
+			if (newVertexSet[i] == 1) {
+				auto& r = *rVertexAdj[rVertexNames[i]]->getEdgeAdj();
+				for each (edge* eg in r){
+					v = eg->getTo()->getNumber();
+					if (newVertexSet[v] == 0 && eg->getPower() < e) {
+						e = eg->getPower();
+						minPowerEdge = eg;
+					}
+				}
+			}
+		}
+		newVertexSet[minPowerEdge->getTo()->getNumber()] = 1;
+		newEdgeSet.push_back(minPowerEdge);
+
+	}
+
+	for each (edge* eg in newEdgeSet){
+		cout << "从" << eg->getFrom()->getName() << "到" << eg->getTo()->getName() << "修一条路" << endl;
+	}
+
+}
+
+void distributionGraph::miniDistanse(){
 
 	if (isGraphEmpty())
 		return;
@@ -72,8 +106,8 @@ void distributionGraph::creatTourSortGraph() {
 	//非递归栈辅助深度优先遍历,并把路线图简单地存储在tourGuide中
 	DFSTraverse(rTourGuide);
 
-	auto lvcbg = tourGuide->begin();
-	auto lvced = tourGuide->end();
+	auto lvcbg = rTourGuide.begin();
+	auto lvced = rTourGuide.end();
 	//打印所有遍历路上经历的节点
 	cout << (*lvcbg)->getName();
 	while (++lvcbg != lvced)
@@ -132,60 +166,94 @@ void distributionGraph::DFSTraverse(list<vertex*>& rTourGuide) {
 }
 
 //判断导游线路图有无回路
-void distributionGraph::TopoSort() {
+void distributionGraph::topoSort() {
+
+	//判断图是否为空和导游图是否为空
+	if (isGraphEmpty())
+		return;
+
+	if (tourGuide == nullptr) {
+		cout << "你应该先创建导游线路图！请输入4。" << endl;
+		return;
+	}
 
 	//拓扑排序方法
-	//auto size = vertexNames->size();
-	////初始化导游图中的景点入度
-	//vector<vector<unsigned int>>* map = new vector<vector<unsigned int>>(size, vector<int>(size, 0));
-	//vector<unsigned int>*         indegree = new vector<unsigned int>(size, 0);
-	//auto                 it = tourGuide->begin();
-
-	//while(it != tourGuide->end()){
-	//	auto iy = ++it;
-	//	if (iy != tourGuide->end()) {
-	//		int & power = (*map)[(*it)->getNumber()][(*iy)->getNumber()];
-	//		if (!power) {
-	//			power++;
-	//			(*indegree)[(*it)->getNumber()]++;
-	//		}
-	//	}
-	//}
 	//内部逻辑,返回值为vector<string>*
-	//auto result = toposort(map, indegree);
-	//if (result->size() != size-1) {
-	//	cout << "图中有回路" << endl;
-	//}
-
-	vector<string> result;
-	findLoopUsingDFS(result);	//遍历导游图得到
-	if (!result.empty()) {
-		cout << "图中有回路:" << endl;
-		for each (string var in result){
-			cout << var;
+	vector<int> result(vertexNumber+1);
+	toposort(result);
+	for (unsigned i = 1; i <= vertexNumber; ++i)
+		if (result[i] > 0) {
+			cout << "图中有回路" << endl;
+			//输出环路
+			auto& rNames = *vertexNames;
+			for (unsigned j = i; j <= vertexNumber; ++j)
+				if (result[j] > 0)
+					cout << rNames[j] << ' ';
+			cout << endl;
+			result[0] = 1;
+			break;
 		}
-		cout << endl;
+	
+	if (result[0] == 0) {
+		cout << "图中没有回路" << endl;
 	}
-	//delete map;
-	//delete indegree;
+
+	//遍历导游图方法
+	//vector<string> result;
+	//findLoopUsingDFS(result);	//遍历导游图得到
+	//if (!result.empty()) {
+	//	cout << "图中有回路:" << endl;
+	//	for each (string var in result){
+	//		cout << var;
+	//	}
+	//	cout << endl;
+	//}
 }
 
-vector<string>* distributionGraph::toposort(vector<vector<unsigned>>* map, vector<unsigned>* indegree) {
-	unsigned i, j, k, size = indegree->size();
-	vector<string>* result = new vector<string>(indegree->size()-1);
-	for (i = 1;i<size;i++){ //遍历n次
-		for (j = 1;j<size;j++){ //找出入度为0的节点
-			if ((*indegree)[j] == 0){
-				(*indegree)[j]--;
-				result->push_back((*vertexNames)[j]);
-				for (k = 1;k<size;k++) //删除与该节点关联的边
-					if ((*map)[j][k] == 1)
-						(*indegree)[k]--;
+//拓扑排序方法，只为这道题而写的。
+void distributionGraph::toposort(vector<int>& result) {
+	//初始化导游图中的景点入度
+	vector<vector<unsigned>>* map = new vector<vector<unsigned>>(
+									vertexNumber + 1, vector<unsigned>(vertexNumber + 1, 0));
+	vector<int>* indegree = new vector<int>(vertexNumber + 1, 0);
+
+	auto& rMap = *map;
+	auto& rIndegree = *indegree;
+	auto  it = tourGuide->begin();
+	auto  iy = it;
+	auto  itEnd = tourGuide->end();
+	unsigned  startNumber = (*(it))->getNumber();
+	//初始化导游图的邻接矩阵
+	while (++iy != itEnd) {
+		unsigned from = (*it++)->getNumber();
+		unsigned in = (*iy)->getNumber();
+		++rMap[from][in];//权值+1
+		++rIndegree[in];//入度+1
+	}
+	
+	//下边这段专门为本题写
+	rIndegree[startNumber] = -1;
+	for (unsigned k = 1; k <= vertexNumber; k++) {
+		if (rMap[startNumber][k] == 1)
+			--rIndegree[k];
+		rMap[k][startNumber] = 0;
+	}
+	//进行拓扑排序
+	for (unsigned i = 1; i <= vertexNumber; ++i) //遍历n次
+		for (unsigned j = 1; j <= vertexNumber; ++j) //找出入度为0的节点
+			if (rIndegree[j] == 0){
+
+				rIndegree[j]--;//入度减为-1，说明已排序
+
+				for (unsigned k = 1; k <= vertexNumber; k++) //删除与该节点关联的边
+					if (rMap[j][k] == 1)
+						rIndegree[k]--;
 				break;
 			}
-		}
-	}
-	return result;
+
+	result = rIndegree;
+	delete map;
+	delete indegree;
 }
 
 //使用深度优先方法进行拓扑排序
