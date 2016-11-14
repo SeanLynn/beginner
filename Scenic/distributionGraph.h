@@ -4,16 +4,17 @@
 #include <iostream>
 #include <fstream>
 #include <stack>
-
+#include <algorithm>
 class distributionGraph {
 public:
+	void sortedByPopularity();//按景点欢迎度进行排序
 	void miniDistanse();	  //求两景点间的最短路径
 	void creatTourSortGraph();//输出导游线路图
 	void topoSort();		  //判断导游线路图有无回路
 	void outputGraph();		  //输出图的邻接表
 	void createGraph();		  //创建图的邻接表存储
 	void miniSpanTree();	  //输出道路修建规划图
-	distributionGraph() {}	  //构造函数
+	distributionGraph();	  //构造函数
 	~distributionGraph();	  //析构函数
 private:
 	unordered_map<string ,vertex*>* vertexAdj; //名字->景点 hash表
@@ -25,7 +26,7 @@ private:
 	unsigned edgeNumber;                       //无向边数量，实际边*2
 	void DFSTraverse(list<vertex*>&);		   //深度优先遍历
 	bool isEdge(const string&, const string&); //判断两个顶点之间是否有直接相连的边
-	void toposort(vector<int>&);            //求有无回路,拓扑排序改编
+	void toposort(vector<int>&);               //求有无回路,拓扑排序改编
 	void findLoopUsingDFS(vector<string>&);    //遍历导游路线图求回路
 	void Adj2Mtx(vector<vector<unsigned>>&);   //邻接链表转邻接矩阵
 	bool isGraphEmpty();					   //判断图是否空
@@ -34,40 +35,58 @@ private:
 		vector<unsigned>&, vector<unsigned>&); //迪杰斯特拉算法求最短路径
 	void outPutShortestPath(unsigned,
 		vector<unsigned>&, vector<unsigned>&); //输出所求的最短路径
+	void quickSort(vector<vertex*>&,
+		unsigned, unsigned);                   //快速排序按景点受欢迎度
+	void insertSort(vector<vertex*>&,
+		unsigned, unsigned);                   //插入排序按景点受欢迎度
 };
+
+//按景点欢迎度进行排序
+void distributionGraph::sortedByPopularity() {
+	vector<vertex*> vertexSet;
+	for each (auto& var in *vertexAdj)
+		vertexSet.push_back(var.second);
+
+	quickSort(vertexSet, 0, vertexSet.size());
+
+	for_each(vertexSet.begin(), vertexSet.end(), [](vertex* v) {cout << v->getName() << ' ' << v->getPopularity() << ' ';});
+}
 
 //输出道路修建规划图
 void distributionGraph::miniSpanTree() {
-	vector<unsigned> newVertexSet(vertexNumber+1, 0);
-	vector<edge*> newEdgeSet;
-	auto& rVertexAdj = *vertexAdj;
-	auto& rVertexNames = *vertexNames;
+	vector<unsigned> newVertexSet(vertexNumber+1, 0); //存储新景点的集合
+	vector<edge*> newEdgeSet;						  //存储要建设的边的集合
+	auto& rVertexAdj = *vertexAdj;					  //邻接矩阵
+	auto& rVertexNames = *vertexNames;				  //景点集合
 	newVertexSet[1] = 1;
+	//newVertexSet首位存储目前新景点集合的点数量
 	while (++newVertexSet[0] < vertexNumber) {
-		
+
 		unsigned v, e = 32767;
 		edge* minPowerEdge = nullptr;
-		//找出起点在、终点不在新点集中，而边
-		for (unsigned i = 1; i <= vertexNumber; ++i) {
-			if (newVertexSet[i] == 1) {
+		//找出起点在、终点不在新点集中，而边power最小的边
+		for (unsigned i = 1; i <= vertexNumber; ++i)
+			if (newVertexSet[i] == 1) {//如果此点在新景点集中
 				auto& r = *rVertexAdj[rVertexNames[i]]->getEdgeAdj();
-				for each (edge* eg in r){
+				for each (edge* eg in r){ //遍历此点出发的所有边
 					v = eg->getTo()->getNumber();
+					//符合以下条件：边power较小，终点不在新景点集中
 					if (newVertexSet[v] == 0 && eg->getPower() < e) {
 						e = eg->getPower();
 						minPowerEdge = eg;
 					}
 				}
 			}
-		}
+
+		//记录符合以上条件的边和边终点的信息
 		newVertexSet[minPowerEdge->getTo()->getNumber()] = 1;
 		newEdgeSet.push_back(minPowerEdge);
-
 	}
 
-	for each (edge* eg in newEdgeSet){
-		cout << "从" << eg->getFrom()->getName() << "到" << eg->getTo()->getName() << "修一条路" << endl;
-	}
+	//输出所有符合条件的边，即是最小生成树
+	for each (edge* eg in newEdgeSet)
+		cout << "从" << eg->getFrom()->getName() << "到"
+			 << eg->getTo()->getName() << "修一条路" << endl;
 
 }
 
@@ -101,7 +120,6 @@ void distributionGraph::creatTourSortGraph() {
 	if (isGraphEmpty())
 		return;
 
-	tourGuide = new list<vertex*>();
 	auto& rTourGuide = *tourGuide;
 	//非递归栈辅助深度优先遍历,并把路线图简单地存储在tourGuide中
 	DFSTraverse(rTourGuide);
@@ -113,9 +131,6 @@ void distributionGraph::creatTourSortGraph() {
 	while (++lvcbg != lvced)
 		cout << " --> " << (*lvcbg)->getName();
 	cout << endl;
-
-	//更新所有点的访问状态。
-	updateVertexVisited();
 }
 
 //深度优先遍历
@@ -163,6 +178,9 @@ void distributionGraph::DFSTraverse(list<vertex*>& rTourGuide) {
 				rTourGuide.push_back(stackVertex.top());
 		}
 	}
+
+	//更新所有点的访问状态。
+	updateVertexVisited();
 }
 
 //判断导游线路图有无回路
@@ -172,10 +190,8 @@ void distributionGraph::topoSort() {
 	if (isGraphEmpty())
 		return;
 
-	if (tourGuide == nullptr) {
-		cout << "你应该先创建导游线路图！请输入4。" << endl;
-		return;
-	}
+	if (tourGuide->empty())
+		DFSTraverse(*tourGuide);
 
 	//拓扑排序方法
 	//内部逻辑,返回值为vector<string>*
@@ -259,9 +275,8 @@ void distributionGraph::toposort(vector<int>& result) {
 //使用深度优先方法进行拓扑排序
 void distributionGraph::findLoopUsingDFS(vector<string>& loop){//loop存储回路
 	//导游图不能是空的
-	if (tourGuide->empty()) {
-		return;
-	}
+	if (tourGuide->empty())
+		DFSTraverse(*tourGuide);
 
 	auto tourIt = tourGuide->begin();
 	auto pCurrentVertex = *tourIt;
@@ -296,10 +311,8 @@ void distributionGraph::outputGraph(){
 	//判断图是否为空
 	if (isGraphEmpty())
 		return;
-	if (vertexMtx == nullptr) {
-		vertexMtx =	new vector<vector<unsigned>>
+	vertexMtx =	new vector<vector<unsigned>>
 			(vertexNumber + 1, vector<unsigned>(vertexNumber + 1, 32767));
-	}
 	auto& rMatrix = *vertexMtx;
 	Adj2Mtx(rMatrix);
 	auto& rVertexNames = *vertexNames;
@@ -316,28 +329,25 @@ void distributionGraph::outputGraph(){
 			printf("%8d", rMatrix[j][k]);
 		cout << endl;
 	}
+	delete vertexMtx;
 }
 
 //创建图的邻接表存储
 void distributionGraph::createGraph() {
 
-	vertexNames  = new vector<string>();
-	pEdgeVec     = new vector<edge*>();
-	vertexAdj    = new unordered_map<string, vertex*>();
 	auto& rVertexAdj = *vertexAdj;
-	string name;
-	unsigned i;
 	//打开存有景区信息的文件
 	ifstream in("info.txt");
 
 	//读取节点数和边数,字符串转数字
 	char c[128];
-	memset(c, '\0', 128);
-	in.getline(c, 128, ' ');
-	vertexNumber = atoi(c);
-	memset(c, '\0', 128);
-	in.getline(c, 128);
-	edgeNumber = atoi(c);
+	char n[16];
+	memset(n, '\0', 16);
+	in.getline(n, 16, ' ');
+	vertexNumber = atoi(n);
+	memset(n, '\0', 16);
+	in.getline(n, 16);
+	edgeNumber = atoi(n);
 	cout << "请输入定点数和边数：" << vertexNumber << ' ' << edgeNumber << endl;
 
 	//循环读取文件中的景点名字信息
@@ -345,24 +355,22 @@ void distributionGraph::createGraph() {
 	
 	vertexNames->push_back(string(" "));
 	
-	for (i = 1; i < vertexNumber; ++i) {
+	for (unsigned i = 1; i <= vertexNumber; ++i) {
+		unsigned p;
 		memset(c, '\0', 128);
 		in.getline(c, 128, ' ');
-		name = c;
+		string name(c);
 		cout << name << ' ';
-		rVertexAdj[name] = new vertex(name, i);
+		memset(n, '\0', 16);
+		in.getline(n, 16);
+		p = atoi(n);
+		rVertexAdj[name] = new vertex(name, i, p);
 		vertexNames->push_back(name);
 	}
-	memset(c, '\0', 128);
-	in.getline(c, 128);
-	name = c;
-	cout << name << ' ';
-	rVertexAdj[name] = new vertex(name, i);
-	vertexNames->push_back(name);
 	cout << endl;
 	
 	//读取边信息
-	for (i = 1; i <= edgeNumber; ++i) {
+	for (unsigned i = 1; i <= edgeNumber; ++i) {
 		string f, t;
 		int power;
 		cout << "请输入第" << i << "条边的两个顶点以及该边的权值：";
@@ -376,9 +384,9 @@ void distributionGraph::createGraph() {
 		in.getline(c, 128, ' ');
 		t = c;
 		cout << t << ' ';
-		memset(c, '\0', 128);
-		in.getline(c, 128);
-		power = atoi(c);
+		memset(n, '\0', 16);
+		in.getline(n, 128);
+		power = atoi(n);
 		cout << power << endl;
 
 		//为节点和边添加关联关系
@@ -398,11 +406,10 @@ void distributionGraph::createGraph() {
 void distributionGraph::shortedstPathDijkstra( 
 	unsigned v0, vector<unsigned>& path, vector<unsigned>& shortPathTable)
 {
-	if (vertexMtx == nullptr) { //如果邻接矩阵没有初始化
-		vertexMtx = new vector<vector<unsigned>>
+	vertexMtx = new vector<vector<unsigned>>
 			(vertexNumber + 1, vector<unsigned>(vertexNumber + 1, 32767));
-		Adj2Mtx(*vertexMtx);
-	}
+	Adj2Mtx(*vertexMtx);
+
 	auto& rMatrix = *vertexMtx;
 	unsigned v, w, k, min, num = vertexNumber+1;
 	vector<int> final(num); //final[k]=1表示求得v0到k点的最短权值了
@@ -431,6 +438,7 @@ void distributionGraph::shortedstPathDijkstra(
 			}
 		}
 	}
+	delete vertexMtx;
 }
 
 //输出最短路径和最短距离
@@ -481,25 +489,62 @@ inline void distributionGraph::updateVertexVisited() {
 		var.second->setVisited(false);
 }
 
+//快速排序按景点受欢迎度 [from, to)
+void distributionGraph::quickSort(vector<vertex*>& set, unsigned from, unsigned to) {
+	if (to - from < 4) {
+		insertSort(set, from, to);
+		return;
+	}
+	vertex* mark = set[(from+to)>>1];
+	unsigned popl = mark->getPopularity();
+	unsigned left = from;
+	unsigned right = to - 1;
+	while (right > left) {
+		while (set[left]->getPopularity() > popl)
+			++left;
+		while (set[right]->getPopularity() < popl)
+			--right;
+		if (right > left) {
+			swap(set[left], set[right]);
+			++left;
+			--right;
+		}
+	}
+	if (from < right)
+		quickSort(set, from, right + 1);
+	if (left < to)
+		quickSort(set, left, to);
+}
+
+//插入排序按景点受欢迎度
+void distributionGraph::insertSort(vector<vertex*>& set, unsigned from, unsigned to) {
+	if (to - from <= 1)
+		return;
+	for (unsigned i = from + 1; i < to; ++i)
+		for (unsigned j = i; j > from && set[j - 1]->getPopularity() < set[j]->getPopularity();	--j)
+			swap(set[j - 1], set[j]);
+}
+
+//构造函数
+distributionGraph::distributionGraph() 
+	:vertexAdj(new unordered_map<string, vertex*>()),
+	pEdgeVec(new vector<edge*>()),
+	vertexNames(new vector<string>()),
+	tourGuide(new list<vertex*>())
+{
+}
+
 //析构函数
 distributionGraph::~distributionGraph() {
-	if (vertexAdj != nullptr) {
-		for each (const pair<string, vertex*>& var in *vertexAdj)
-			delete var.second;
-		delete vertexAdj;
-	}
-	if (pEdgeVec != nullptr) {
-		for each (const edge* var in *pEdgeVec)
-			delete var;
-		delete pEdgeVec;
-	}
-	if (tourGuide != nullptr) {
-		delete tourGuide;
-	}
-	if (vertexNames != nullptr) {
-		delete vertexNames;
-	}
-	if (vertexMtx != nullptr) {
-		delete vertexMtx;
-	}
+
+	delete tourGuide;
+	delete vertexNames;
+
+	for each (const edge* var in *pEdgeVec)
+		delete var;
+	delete pEdgeVec;
+
+	for each (const pair<string, vertex*>& var in *vertexAdj)
+		delete var.second;
+	delete vertexAdj;
 }

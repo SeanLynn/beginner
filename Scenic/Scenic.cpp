@@ -34,6 +34,12 @@ int main()
 		case 6:
 			graph->miniSpanTree();
 			break;
+		case 7:
+			graph->sortedByPopularity();
+			break;
+		case 8:
+
+			break;
 		default:
 			break;
 		}
@@ -56,7 +62,8 @@ void welcomeWords() {
 	cout << "4、输出导游线路图中的回路。\n";
 	cout << "5、求两个景点间的最短路径和最短距离。\n";
 	cout << "6、输出道路修建规划图。\n";
-	cout << "7、停车场车辆进出记录信息。\n";
-	cout << "8、退出系统。" << endl;
+	cout << "7、按景点欢迎度进行排序并输出。\n";
+	cout << "8、停车场车辆进出记录信息。\n";
+	cout << "0、退出系统。" << endl;
 	cout << "请输入您要选择的菜单项：";
 }
