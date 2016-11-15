@@ -38,7 +38,7 @@ int main()
 			graph->sortedByPopularity();
 			break;
 		case 8:
-
+			graph->parkingLotMagm();
 			break;
 		default:
 			break;

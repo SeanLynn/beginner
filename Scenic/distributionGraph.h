@@ -1,12 +1,14 @@
 #pragma once
-#include <unordered_map>
 #include "vertex.h"
+#include "parkingLot.h"
+#include <unordered_map>
 #include <iostream>
 #include <fstream>
 #include <stack>
 #include <algorithm>
 class distributionGraph {
 public:
+	void parkingLotMagm();    //停车场管理系统程序接口
 	void sortedByPopularity();//按景点欢迎度进行排序
 	void miniDistanse();	  //求两景点间的最短路径
 	void creatTourSortGraph();//输出导游线路图
@@ -22,6 +24,7 @@ private:
 	vector<string>* vertexNames;               //按景点初始化顺序存储景点的名字
 	list<vertex*>* tourGuide;                  //存储导游路线图
 	vector<vector<unsigned>>* vertexMtx;       //存储邻接矩阵
+	parkingLot* lot;
 	unsigned vertexNumber;                     //景点数量
 	unsigned edgeNumber;                       //无向边数量，实际边*2
 	void DFSTraverse(list<vertex*>&);		   //深度优先遍历
@@ -41,6 +44,12 @@ private:
 		unsigned, unsigned);                   //插入排序按景点受欢迎度
 };
 
+//停车场管理系统程序接口
+void distributionGraph::parkingLotMagm() {
+	lot->management();
+}
+
+
 //按景点欢迎度进行排序
 void distributionGraph::sortedByPopularity() {
 	vector<vertex*> vertexSet;
@@ -49,7 +58,8 @@ void distributionGraph::sortedByPopularity() {
 
 	quickSort(vertexSet, 0, vertexSet.size());
 
-	for_each(vertexSet.begin(), vertexSet.end(), [](vertex* v) {cout << v->getName() << ' ' << v->getPopularity() << ' ';});
+	for_each(vertexSet.begin(), vertexSet.end(),
+		[](vertex* v) {cout << v->getName() << ' ' << v->getPopularity() << ' ';});
 }
 
 //输出道路修建规划图
@@ -530,7 +540,8 @@ distributionGraph::distributionGraph()
 	:vertexAdj(new unordered_map<string, vertex*>()),
 	pEdgeVec(new vector<edge*>()),
 	vertexNames(new vector<string>()),
-	tourGuide(new list<vertex*>())
+	tourGuide(new list<vertex*>()),
+	lot(new parkingLot())
 {
 }
 
