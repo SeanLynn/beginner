@@ -5,8 +5,8 @@
 using namespace std;
 class vertex {
 public:
-	vertex(string n, unsigned i, unsigned p = 0) 
-		: name(n), number(i), visited(false),
+	vertex(string n, unsigned i, unsigned p = 0, string f = "") 
+		: name(n), number(i), visited(false), info(f),
 		  edgeAdj(new list<edge*>()), popularity(p) {}
 	
 	~vertex() {
@@ -44,6 +44,10 @@ public:
 		return false;
 	}
 
+	const string& getInfo() {
+		return info;
+	}
+
 	void setPopularity(unsigned p) {
 		popularity = p;
 	}
@@ -55,6 +59,7 @@ private:
 	string name;         //景点名字
 	unsigned number;     //景点编号
 	bool visited;        //景点是否被访问过
+	string info;		 //景区简介
 	list<edge*>* edgeAdj;//从景点出发的边
 	unsigned popularity; //景点欢迎度
 };

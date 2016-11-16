@@ -3,7 +3,7 @@
 
 #include "stdafx.h"
 #include "distributionGraph.h"
-#include <Windows.h>
+
 void welcomeWords();
 int main()
 {
@@ -43,9 +43,9 @@ int main()
 		default:
 			break;
 		}
-		if (cmd == 0 || cmd < 0 || cmd > 7)
+		if (cmd == 0 || cmd < 0 || cmd > 8)
 			break;
-		Sleep(1000);
+		Sleep(500);
 	}
 	delete graph;
 	return 0;
@@ -63,7 +63,8 @@ void welcomeWords() {
 	cout << "5、求两个景点间的最短路径和最短距离。\n";
 	cout << "6、输出道路修建规划图。\n";
 	cout << "7、按景点欢迎度进行排序并输出。\n";
-	cout << "8、停车场车辆进出记录信息。\n";
+	cout << "8、根据用户输入的关键字进行景点的查找。\n";
+	cout << "9、停车场车辆进出记录信息。\n";
 	cout << "0、退出系统。" << endl;
 	cout << "请输入您要选择的菜单项：";
 }

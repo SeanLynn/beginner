@@ -48,5 +48,8 @@
     <ClCompile Include="Scenic.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="parkingLot.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

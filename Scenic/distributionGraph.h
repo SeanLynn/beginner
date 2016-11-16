@@ -8,6 +8,7 @@
 #include <algorithm>
 class distributionGraph {
 public:
+	void searchWithKeyWords();//用户输入的关键字进行景点的查找
 	void parkingLotMagm();    //停车场管理系统程序接口
 	void sortedByPopularity();//按景点欢迎度进行排序
 	void miniDistanse();	  //求两景点间的最短路径
@@ -42,13 +43,26 @@ private:
 		unsigned, unsigned);                   //快速排序按景点受欢迎度
 	void insertSort(vector<vertex*>&,
 		unsigned, unsigned);                   //插入排序按景点受欢迎度
+	void queryWords(const string&, 
+		vector<vertex*>&);                     //在景点及其简介中搜索关键字
+	bool kmp(const string&, const string&);	   //kmp算法匹配图景点名称或者间接
+	void computePrefixFunction(vector<int>&,
+		const string&);						   //kmp前缀函数
 };
+
+//用户输入的关键字进行景点的查找
+void distributionGraph::searchWithKeyWords() {
+	cout << "请输入你要查找的关键字：";
+	string key;
+	cin >> key;
+	vector<vertex*> vtHasInfo;
+	queryWords(key, vtHasInfo);
+}
 
 //停车场管理系统程序接口
 void distributionGraph::parkingLotMagm() {
 	lot->management();
 }
-
 
 //按景点欢迎度进行排序
 void distributionGraph::sortedByPopularity() {
@@ -372,9 +386,12 @@ void distributionGraph::createGraph() {
 		string name(c);
 		cout << name << ' ';
 		memset(n, '\0', 16);
-		in.getline(n, 16);
+		in.getline(n, 16, ' ');
 		p = atoi(n);
-		rVertexAdj[name] = new vertex(name, i, p);
+		memset(c, '\0', 128);
+		in.getline(c, 128);
+		string info(c);
+		rVertexAdj[name] = new vertex(name, i, p, c);
 		vertexNames->push_back(name);
 	}
 	cout << endl;
@@ -505,7 +522,7 @@ void distributionGraph::quickSort(vector<vertex*>& set, unsigned from, unsigned 
 		insertSort(set, from, to);
 		return;
 	}
-	vertex* mark = set[(from+to)>>1];
+	vertex* mark = set[(from + to) >> 1];
 	unsigned popl = mark->getPopularity();
 	unsigned left = from;
 	unsigned right = to - 1;
@@ -531,12 +548,12 @@ void distributionGraph::insertSort(vector<vertex*>& set, unsigned from, unsigned
 	if (to - from <= 1)
 		return;
 	for (unsigned i = from + 1; i < to; ++i)
-		for (unsigned j = i; j > from && set[j - 1]->getPopularity() < set[j]->getPopularity();	--j)
+		for (unsigned j = i; j > from && set[j - 1]->getPopularity() < set[j]->getPopularity(); --j)
 			swap(set[j - 1], set[j]);
 }
 
 //构造函数
-distributionGraph::distributionGraph() 
+distributionGraph::distributionGraph()
 	:vertexAdj(new unordered_map<string, vertex*>()),
 	pEdgeVec(new vector<edge*>()),
 	vertexNames(new vector<string>()),
@@ -558,4 +575,51 @@ distributionGraph::~distributionGraph() {
 	for each (const pair<string, vertex*>& var in *vertexAdj)
 		delete var.second;
 	delete vertexAdj;
+}
+
+//在景点及其简介中搜索关键字
+void distributionGraph::queryWords(const string& key, vector<vertex*>& vtHasInfo) {
+	for each (auto var in *vertexAdj) {
+		const string& name = var.first;
+		const string& info = var.second->getInfo();
+		if (kmp(key, name) || kmp(key, info)) {
+			vtHasInfo.push_back(var.second);
+		}
+	}
+}
+
+//kmp算法匹配图景点名称或者间接，如果content中含有target，返回true
+bool distributionGraph::kmp(const string& target, const string& content) {
+	unsigned tgLen = target.size();
+	unsigned ctLen = content.size();
+	if (tgLen > ctLen) {
+		return false;
+	}
+	vector<int> vi;
+	computePrefixFunction(vi, target); //kmp前缀函数
+	int q = -1;
+	for (unsigned i = 0; i < ctLen; ++i) {
+		while (q > -1 && target[q + 1] != content[i])
+			q = vi[q]; //如果出现不相等的，修正
+		if (target[q + 1] == content[i])
+			++q;
+		if (q == tgLen-1)
+			return true;
+	}
+	return false;
+}
+
+//kmp前缀函数
+void computePrefixFunction(vector<int>& vi, const string& str) {
+	vi.resize(str.size());
+	unsigned m = str.size();
+	vi[0] = -1;
+	int k = -1;
+	for (unsigned q = 1; q < m; ++q) {
+		while (k >= 0 && str[k + 1] != str[q])
+			k = vi[k];
+		if (str[k + 1] == str[q])
+			++k;
+		vi[q] = k;
+	}
 }
