@@ -1,16 +1,18 @@
 #pragma once
 #include "vertex.h"
+#include <memory>
+using std::shared_ptr;
 class vertex;
 class edge {
 public:
-	edge(vertex* f, vertex* t, int d)
+	edge(shared_ptr<vertex> f, shared_ptr<vertex> t, int d)
 	: from(f), to(t), distance(d){}
 
-	vertex* getFrom(){
+	shared_ptr<vertex>& getFrom(){
 		return from;
 	}
 
-	vertex* getTo(){
+	shared_ptr<vertex>& getTo(){
 		return to;
 	}
 
@@ -18,7 +20,7 @@ public:
 		return distance;
 	}
 private:
-	vertex* from;
-	vertex* to;
+	shared_ptr<vertex> from;
+	shared_ptr<vertex> to;
 	unsigned distance;
 };

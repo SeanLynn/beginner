@@ -1,23 +1,20 @@
 #pragma once
 #include <string>
 #include <list>
+#include <memory>
 #include "edge.h"
 using namespace std;
 class vertex {
 public:
 	vertex(string n, unsigned i, unsigned p = 0, string f = "") 
 		: name(n), number(i), visited(false), info(f),
-		  edgeAdj(new list<edge*>()), popularity(p) {}
+		  edgeAdj(make_shared<list<weak_ptr<edge>>>()), popularity(p) {}
 	
-	~vertex() {
-		delete edgeAdj;
-	}
-
-	void addEdge(edge* e){
+	void addEdge(const shared_ptr<edge> e){
 		edgeAdj->push_back(e);
 	}
 
-	const list<edge*>* getEdgeAdj() const {
+	const shared_ptr<list<weak_ptr<edge>>> getEdgeAdj() const {
 		return edgeAdj;
 	}
 
@@ -37,9 +34,9 @@ public:
 		return name;
 	}
 
-	bool isAccessDirect(const vertex* t) {
+	bool isAccessDirect(const shared_ptr<vertex> t) {
 		for each (const auto eg in *edgeAdj)
-			if (eg->getTo() == t)
+			if (eg.lock()->getTo() == t) //一般认为eg.lock()不是空悬指针
 				return true;
 		return false;
 	}
@@ -60,6 +57,6 @@ private:
 	unsigned number;     //景点编号
 	bool visited;        //景点是否被访问过
 	string info;		 //景区简介
-	list<edge*>* edgeAdj;//从景点出发的边
+	shared_ptr<list<weak_ptr<edge>>> edgeAdj;//从景点出发的边
 	unsigned popularity; //景点欢迎度
 };

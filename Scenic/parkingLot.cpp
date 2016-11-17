@@ -8,7 +8,7 @@
 using std::cout;
 using std::endl;
 using std::cin;
-using std::string;
+using std::make_shared;
 //管理程序入口
 void parkingLot::management() {
 	while (true) {
@@ -51,7 +51,7 @@ void parkingLot::popBackCar() {
 	cin >> lic;
 
 	if (popBack(lic) && !carQueue.empty()) { //popBack成功并且便道上有车
-		car* r = carQueue.front();
+		shared_ptr<car> r = carQueue.front();
 		r->start = std::chrono::system_clock::now(); //重置进场时间
 		carQueue.pop();
 		cout << "进场车牌为：" << r->license << endl;
@@ -62,11 +62,11 @@ void parkingLot::popBackCar() {
 //汽车出车场
 bool parkingLot::popBack(const string& lic) {
 
-	std::stack<car*> tempCarStack;
-	car* r = nullptr;
+	std::stack<shared_ptr<car>> tempCarStack;
+	shared_ptr<car> r = nullptr;
 	unsigned size = carStack.size();
 	for (unsigned i = 0; i < size; ++i) {
-		car* tempCar = carStack.top();
+		shared_ptr<car> tempCar = carStack.top();
 		if (tempCar->license == lic) {
 			r = tempCar;
 			carStack.pop();
@@ -110,11 +110,12 @@ void parkingLot::pushBackCar() {
 	auto time = std::chrono::system_clock::now();
 
 	//添加进车辆栈，并输出相关信息
-	pushBack(new car(lic, time));
+	shared_ptr<car> r(new car(lic, time));
+	pushBack(r);
 }
 
 //汽车进车场
-void parkingLot::pushBack(car* r) {
+void parkingLot::pushBack(shared_ptr<car> r) {
 	if (carStack.size() < capacity) {
 		carStack.push(r);
 		auto t = std::chrono::system_clock::to_time_t(r->start); //把时间转换成数字
@@ -138,15 +139,9 @@ inline unsigned long long parkingLot::parkingCost(long long parkingTime) {
 	return (unsigned long long)parkingTime * 2;
 }
 
-
+//获得t所代表的本地时间
 inline void parkingLot::getLocalTime(__time64_t t, char* buf) {
 	struct tm newtime;
 	localtime_s(&newtime, &t);
 	asctime_s(buf, 32, &newtime);
-}
-
-//析构函数
-parkingLot::~parkingLot() {
-	for_each(carStack._Get_container().begin(), carStack._Get_container().end(), [](car* r) {delete r;});
-	for_each(carQueue._Get_container().begin(), carQueue._Get_container().end(), [](car* r) {delete r;});
 }
