@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include <Windows.h>
 #include <chrono>
@@ -19,17 +19,17 @@ struct car {
 
 class parkingLot {
 public:
-	void management();   //¹ÜÀí³ÌĞòÈë¿Ú
-	parkingLot(unsigned s = 5) : capacity(s) {}      //¹¹Ôìº¯Êı
+	void management();   //ç®¡ç†ç¨‹åºå…¥å£
+	parkingLot(unsigned s = 5) : capacity(s) {}      //æ„é€ å‡½æ•°
 private:
-	unsigned capacity;		  //Í£³µ³¡ÈİÁ¿
-	std::stack<shared_ptr<car>> carStack; //Í£³µ³¡
-	std::queue<shared_ptr<car>> carQueue; //±ãµÀ
-	void pushBackCar();  //³µÁ¾½ø³µ³¡º¯Êı½Ó¿Ú
-	void popBackCar();   //³µÁ¾³ö³µ³¡º¯Êı½Ó¿Ú
-	void printWelcome(); //´òÓ¡»¶Ó­´Ê
-	unsigned long long parkingCost(long long);//¼ÆËãÍ£³µÏû·Ñ
-	void pushBack(shared_ptr<car>); //³µÁ¾½ø³µ³¡
-	bool popBack(const string&); //³µÁ¾³ö³µ³¡
-	void getLocalTime(__time64_t, char*); //»ñÈ¡±¾µØÊ±¼ä
+	unsigned capacity;		  //åœè½¦åœºå®¹é‡
+	std::stack<shared_ptr<car>> carStack; //åœè½¦åœº
+	std::queue<shared_ptr<car>> carQueue; //ä¾¿é“
+	void pushBackCar();  //è½¦è¾†è¿›è½¦åœºå‡½æ•°æ¥å£
+	void popBackCar();   //è½¦è¾†å‡ºè½¦åœºå‡½æ•°æ¥å£
+	void printWelcome(); //æ‰“å°æ¬¢è¿è¯
+	unsigned long long parkingCost(long long);//è®¡ç®—åœè½¦æ¶ˆè´¹
+	void pushBack(shared_ptr<car>); //è½¦è¾†è¿›è½¦åœº
+	bool popBack(const string&); //è½¦è¾†å‡ºè½¦åœº
+	void getLocalTime(__time64_t, char*); //è·å–æœ¬åœ°æ—¶é—´
 };

@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include <string>
 #include <list>
 #include <memory>
@@ -36,7 +36,7 @@ public:
 
 	bool isAccessDirect(const shared_ptr<vertex> t) {
 		for each (const auto eg in *edgeAdj)
-			if (eg.lock()->getTo() == t) //Ò»°ãÈÏÎªeg.lock()²»ÊÇ¿ÕĞüÖ¸Õë
+			if (eg.lock()->getTo() == t) //ä¸€èˆ¬è®¤ä¸ºeg.lock()ä¸æ˜¯ç©ºæ‚¬æŒ‡é’ˆ
 				return true;
 		return false;
 	}
@@ -53,10 +53,10 @@ public:
 		return popularity;
 	}
 private:
-	string name;         //¾°µãÃû×Ö
-	unsigned number;     //¾°µã±àºÅ
-	bool visited;        //¾°µãÊÇ·ñ±»·ÃÎÊ¹ı
-	string info;		 //¾°Çø¼ò½é
-	shared_ptr<list<weak_ptr<edge>>> edgeAdj;//´Ó¾°µã³ö·¢µÄ±ß
-	unsigned popularity; //¾°µã»¶Ó­¶È
+	string name;         //æ™¯ç‚¹åå­—
+	unsigned number;     //æ™¯ç‚¹ç¼–å·
+	bool visited;        //æ™¯ç‚¹æ˜¯å¦è¢«è®¿é—®è¿‡
+	string info;		 //æ™¯åŒºç®€ä»‹
+	shared_ptr<list<weak_ptr<edge>>> edgeAdj;//ä»æ™¯ç‚¹å‡ºå‘çš„è¾¹
+	unsigned popularity; //æ™¯ç‚¹æ¬¢è¿åº¦
 };

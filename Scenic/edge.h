@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "vertex.h"
 #include <memory>
 using std::shared_ptr;

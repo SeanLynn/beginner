@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "vertex.h"
 #include "parkingLot.h"
 #include <unordered_map>
@@ -8,79 +8,79 @@
 #include <algorithm>
 class distributionGraph {
 public:
-	void searchWithKeyWords();//ÓÃ»§ÊäÈëµÄ¹Ø¼ü×Ö½øĞĞ¾°µãµÄ²éÕÒ
-	void parkingLotMagm();    //Í£³µ³¡¹ÜÀíÏµÍ³³ÌĞò½Ó¿Ú
-	void sortedByPopularity();//°´¾°µã»¶Ó­¶È½øĞĞÅÅĞò
-	void miniDistanse();	  //ÇóÁ½¾°µã¼äµÄ×î¶ÌÂ·¾¶
-	void creatTourSortGraph();//Êä³öµ¼ÓÎÏßÂ·Í¼
-	void topoSort();		  //ÅĞ¶Ïµ¼ÓÎÏßÂ·Í¼ÓĞÎŞ»ØÂ·
-	void outputGraph();		  //Êä³öÍ¼µÄÁÚ½Ó±í
-	void createGraph();		  //´´½¨Í¼µÄÁÚ½Ó±í´æ´¢
-	void miniSpanTree();	  //Êä³öµÀÂ·ĞŞ½¨¹æ»®Í¼
-	distributionGraph();	  //¹¹Ôìº¯Êı
+	void searchWithKeyWords();//ç”¨æˆ·è¾“å…¥çš„å…³é”®å­—è¿›è¡Œæ™¯ç‚¹çš„æŸ¥æ‰¾
+	void parkingLotMagm();    //åœè½¦åœºç®¡ç†ç³»ç»Ÿç¨‹åºæ¥å£
+	void sortedByPopularity();//æŒ‰æ™¯ç‚¹æ¬¢è¿åº¦è¿›è¡Œæ’åº
+	void miniDistanse();	  //æ±‚ä¸¤æ™¯ç‚¹é—´çš„æœ€çŸ­è·¯å¾„
+	void creatTourSortGraph();//è¾“å‡ºå¯¼æ¸¸çº¿è·¯å›¾
+	void topoSort();		  //åˆ¤æ–­å¯¼æ¸¸çº¿è·¯å›¾æœ‰æ— å›è·¯
+	void outputGraph();		  //è¾“å‡ºå›¾çš„é‚»æ¥è¡¨
+	void createGraph();		  //åˆ›å»ºå›¾çš„é‚»æ¥è¡¨å­˜å‚¨
+	void miniSpanTree();	  //è¾“å‡ºé“è·¯ä¿®å»ºè§„åˆ’å›¾
+	distributionGraph();	  //æ„é€ å‡½æ•°
 private:
-	typedef vector<vector<unsigned>> matrix;		//matrixµÄtypedef
+	typedef vector<vector<unsigned>> matrix;		//matrixçš„typedef
 	shared_ptr<unordered_map<string, 
-		shared_ptr<vertex>>> vertexAdj;             //Ãû×Ö->¾°µã hash±í
-	shared_ptr<vector<shared_ptr<edge>>> pEdgeVec;  //ËùÓĞ±ßµÄ¼¯ºÏ£¬·½±ãÎö¹¹£¬ÔİÊ±²»ÓÃC++11
-	shared_ptr<vector<string>> vertexNames;			//°´¾°µã³õÊ¼»¯Ë³Ğò´æ´¢¾°µãµÄÃû×Ö
-	shared_ptr<list<shared_ptr<vertex>>> tourGuide;	//´æ´¢µ¼ÓÎÂ·ÏßÍ¼
-	shared_ptr<matrix> vertexMtx;	//´æ´¢ÁÚ½Ó¾ØÕó
-	shared_ptr<parkingLot> lot;						//Í£³µ³¡
-	unsigned vertexNumber;							//¾°µãÊıÁ¿
-	unsigned edgeNumber;							//ÎŞÏò±ßÊıÁ¿£¬Êµ¼Ê±ß*2
-	void DFSTraverse(list<shared_ptr<vertex>>&);	//Éî¶ÈÓÅÏÈ±éÀú
-	bool isEdge(const string&, const string&);		//ÅĞ¶ÏÁ½¸ö¶¥µãÖ®¼äÊÇ·ñÓĞÖ±½ÓÏàÁ¬µÄ±ß
-	void toposort(vector<int>&);					//ÇóÓĞÎŞ»ØÂ·,ÍØÆËÅÅĞò¸Ä±à
-	void findLoopUsingDFS(vector<string>&);			//±éÀúµ¼ÓÎÂ·ÏßÍ¼Çó»ØÂ·
-	void Adj2Mtx(matrix&);		//ÁÚ½ÓÁ´±í×ªÁÚ½Ó¾ØÕó
-	bool isGraphEmpty();							//ÅĞ¶ÏÍ¼ÊÇ·ñ¿Õ
-	void updateVertexVisited();						//¸üĞÂËùÓĞµãµÄ·ÃÎÊ×´Ì¬
+		shared_ptr<vertex>>> vertexAdj;             //åå­—->æ™¯ç‚¹ hashè¡¨
+	shared_ptr<vector<shared_ptr<edge>>> pEdgeVec;  //æ‰€æœ‰è¾¹çš„é›†åˆï¼Œæ–¹ä¾¿ææ„ï¼Œæš‚æ—¶ä¸ç”¨C++11
+	shared_ptr<vector<string>> vertexNames;			//æŒ‰æ™¯ç‚¹åˆå§‹åŒ–é¡ºåºå­˜å‚¨æ™¯ç‚¹çš„åå­—
+	shared_ptr<list<shared_ptr<vertex>>> tourGuide;	//å­˜å‚¨å¯¼æ¸¸è·¯çº¿å›¾
+	shared_ptr<matrix> vertexMtx;	//å­˜å‚¨é‚»æ¥çŸ©é˜µ
+	shared_ptr<parkingLot> lot;						//åœè½¦åœº
+	unsigned vertexNumber;							//æ™¯ç‚¹æ•°é‡
+	unsigned edgeNumber;							//æ— å‘è¾¹æ•°é‡ï¼Œå®é™…è¾¹*2
+	void DFSTraverse(list<shared_ptr<vertex>>&);	//æ·±åº¦ä¼˜å…ˆéå†
+	bool isEdge(const string&, const string&);		//åˆ¤æ–­ä¸¤ä¸ªé¡¶ç‚¹ä¹‹é—´æ˜¯å¦æœ‰ç›´æ¥ç›¸è¿çš„è¾¹
+	void toposort(vector<int>&);					//æ±‚æœ‰æ— å›è·¯,æ‹“æ‰‘æ’åºæ”¹ç¼–
+	void findLoopUsingDFS(vector<string>&);			//éå†å¯¼æ¸¸è·¯çº¿å›¾æ±‚å›è·¯
+	void Adj2Mtx(matrix&);		//é‚»æ¥é“¾è¡¨è½¬é‚»æ¥çŸ©é˜µ
+	bool isGraphEmpty();							//åˆ¤æ–­å›¾æ˜¯å¦ç©º
+	void updateVertexVisited();						//æ›´æ–°æ‰€æœ‰ç‚¹çš„è®¿é—®çŠ¶æ€
 	void shortedstPathDijkstra(unsigned,
-		vector<unsigned>&, vector<unsigned>&);		//µÏ½ÜË¹ÌØÀ­Ëã·¨Çó×î¶ÌÂ·¾¶
+		vector<unsigned>&, vector<unsigned>&);		//è¿ªæ°æ–¯ç‰¹æ‹‰ç®—æ³•æ±‚æœ€çŸ­è·¯å¾„
 	void outPutShortestPath(unsigned,
-		vector<unsigned>&, vector<unsigned>&);		//Êä³öËùÇóµÄ×î¶ÌÂ·¾¶
+		vector<unsigned>&, vector<unsigned>&);		//è¾“å‡ºæ‰€æ±‚çš„æœ€çŸ­è·¯å¾„
 	void quickSort(vector<shared_ptr<vertex>>&,
-		unsigned, unsigned);						//¿ìËÙÅÅĞò°´¾°µãÊÜ»¶Ó­¶È
+		unsigned, unsigned);						//å¿«é€Ÿæ’åºæŒ‰æ™¯ç‚¹å—æ¬¢è¿åº¦
 	void insertSort(vector<shared_ptr<vertex>>&,
-		unsigned, unsigned);						//²åÈëÅÅĞò°´¾°µãÊÜ»¶Ó­¶È
+		unsigned, unsigned);						//æ’å…¥æ’åºæŒ‰æ™¯ç‚¹å—æ¬¢è¿åº¦
 	void queryWords(const string&, 
-		vector<shared_ptr<vertex>>&);				//ÔÚ¾°µã¼°Æä¼ò½éÖĞËÑË÷¹Ø¼ü×Ö
-	bool kmp(const string&, const string&);			//kmpËã·¨Æ¥ÅäÍ¼¾°µãÃû³Æ»òÕß¼ä½Ó
+		vector<shared_ptr<vertex>>&);				//åœ¨æ™¯ç‚¹åŠå…¶ç®€ä»‹ä¸­æœç´¢å…³é”®å­—
+	bool kmp(const string&, const string&);			//kmpç®—æ³•åŒ¹é…å›¾æ™¯ç‚¹åç§°æˆ–è€…é—´æ¥
 	void computePrefixFunction(vector<int>&,
-		const string&);								//kmpÇ°×ºº¯Êı
+		const string&);								//kmpå‰ç¼€å‡½æ•°
 };
 
-//ÓÃ»§ÊäÈëµÄ¹Ø¼ü×Ö½øĞĞ¾°µãµÄ²éÕÒ
+//ç”¨æˆ·è¾“å…¥çš„å…³é”®å­—è¿›è¡Œæ™¯ç‚¹çš„æŸ¥æ‰¾
 void distributionGraph::searchWithKeyWords() {
 
 	if (isGraphEmpty()) {
 		return;
 	}
 
-	cout << "ÇëÊäÈëÄãÒª²éÕÒµÄ¹Ø¼ü×Ö£º";
+	cout << "è¯·è¾“å…¥ä½ è¦æŸ¥æ‰¾çš„å…³é”®å­—ï¼š";
 	string key;
 	cin >> key;
 	vector<shared_ptr<vertex>> vtHasInfo;
 	queryWords(key, vtHasInfo);
 	if (vtHasInfo.empty()) {
-		cout << "Ã»ÓĞÓë¡°" << key << "¡±Ïà¹ØµÄÄÚÈİ¡£" << endl;
+		cout << "æ²¡æœ‰ä¸â€œ" << key << "â€ç›¸å…³çš„å†…å®¹ã€‚" << endl;
 		return;
 	}
-	cout << "º¬ÓĞÏà¹ØĞÅÏ¢µÄÓĞ£º" << endl;
+	cout << "å«æœ‰ç›¸å…³ä¿¡æ¯çš„æœ‰ï¼š" << endl;
 	for each (shared_ptr<vertex> var in vtHasInfo)
 	{
-		cout << "¾°µã£º" << var->getName() << endl;
-		cout << "¾°µã½éÉÜ£º" << var->getInfo() << endl << endl;
+		cout << "æ™¯ç‚¹ï¼š" << var->getName() << endl;
+		cout << "æ™¯ç‚¹ä»‹ç»ï¼š" << var->getInfo() << endl << endl;
 	}
 }
 
-//Í£³µ³¡¹ÜÀíÏµÍ³³ÌĞò½Ó¿Ú
+//åœè½¦åœºç®¡ç†ç³»ç»Ÿç¨‹åºæ¥å£
 void distributionGraph::parkingLotMagm() {
 	lot->management();
 }
 
-//°´¾°µã»¶Ó­¶È½øĞĞÅÅĞò
+//æŒ‰æ™¯ç‚¹æ¬¢è¿åº¦è¿›è¡Œæ’åº
 void distributionGraph::sortedByPopularity() {
 	vector<shared_ptr<vertex>> vertexSet;
 	for each (auto& var in *vertexAdj)
@@ -92,25 +92,25 @@ void distributionGraph::sortedByPopularity() {
 		[](shared_ptr<vertex> v) {cout << v->getName() << ' ' << v->getPopularity() << ' ';});
 }
 
-//Êä³öµÀÂ·ĞŞ½¨¹æ»®Í¼
+//è¾“å‡ºé“è·¯ä¿®å»ºè§„åˆ’å›¾
 void distributionGraph::miniSpanTree() {
-	vector<unsigned> newVertexSet(vertexNumber+1, 0); //´æ´¢ĞÂ¾°µãµÄ¼¯ºÏ
-	vector<shared_ptr<edge>> newEdgeSet;			  //´æ´¢Òª½¨ÉèµÄ±ßµÄ¼¯ºÏ
-	auto& rVertexAdj = *vertexAdj;					  //ÁÚ½Ó¾ØÕó
-	auto& rVertexNames = *vertexNames;				  //¾°µã¼¯ºÏ
+	vector<unsigned> newVertexSet(vertexNumber+1, 0); //å­˜å‚¨æ–°æ™¯ç‚¹çš„é›†åˆ
+	vector<shared_ptr<edge>> newEdgeSet;			  //å­˜å‚¨è¦å»ºè®¾çš„è¾¹çš„é›†åˆ
+	auto& rVertexAdj = *vertexAdj;					  //é‚»æ¥çŸ©é˜µ
+	auto& rVertexNames = *vertexNames;				  //æ™¯ç‚¹é›†åˆ
 	newVertexSet[1] = 1;
-	//newVertexSetÊ×Î»´æ´¢Ä¿Ç°ĞÂ¾°µã¼¯ºÏµÄµãÊıÁ¿
+	//newVertexSeté¦–ä½å­˜å‚¨ç›®å‰æ–°æ™¯ç‚¹é›†åˆçš„ç‚¹æ•°é‡
 	while (++newVertexSet[0] < vertexNumber) {
 
 		unsigned v, e = 32767;
 		shared_ptr<edge> minPowerEdge = nullptr;
-		//ÕÒ³öÆğµãÔÚ¡¢ÖÕµã²»ÔÚĞÂµã¼¯ÖĞ£¬¶ø±ßpower×îĞ¡µÄ±ß
+		//æ‰¾å‡ºèµ·ç‚¹åœ¨ã€ç»ˆç‚¹ä¸åœ¨æ–°ç‚¹é›†ä¸­ï¼Œè€Œè¾¹poweræœ€å°çš„è¾¹
 		for (unsigned i = 1; i <= vertexNumber; ++i)
-			if (newVertexSet[i] == 1) {//Èç¹û´ËµãÔÚĞÂ¾°µã¼¯ÖĞ
+			if (newVertexSet[i] == 1) {//å¦‚æœæ­¤ç‚¹åœ¨æ–°æ™¯ç‚¹é›†ä¸­
 				auto& r = *rVertexAdj[rVertexNames[i]]->getEdgeAdj();
-				for each (shared_ptr<edge> eg in r){ //±éÀú´Ëµã³ö·¢µÄËùÓĞ±ß
+				for each (shared_ptr<edge> eg in r){ //éå†æ­¤ç‚¹å‡ºå‘çš„æ‰€æœ‰è¾¹
 					v = eg->getTo()->getNumber();
-					//·ûºÏÒÔÏÂÌõ¼ş£º±ßpower½ÏĞ¡£¬ÖÕµã²»ÔÚĞÂ¾°µã¼¯ÖĞ
+					//ç¬¦åˆä»¥ä¸‹æ¡ä»¶ï¼šè¾¹powerè¾ƒå°ï¼Œç»ˆç‚¹ä¸åœ¨æ–°æ™¯ç‚¹é›†ä¸­
 					if (newVertexSet[v] == 0 && eg->getPower() < e) {
 						e = eg->getPower();
 						minPowerEdge = eg;
@@ -118,15 +118,15 @@ void distributionGraph::miniSpanTree() {
 				}
 			}
 
-		//¼ÇÂ¼·ûºÏÒÔÉÏÌõ¼şµÄ±ßºÍ±ßÖÕµãµÄĞÅÏ¢
+		//è®°å½•ç¬¦åˆä»¥ä¸Šæ¡ä»¶çš„è¾¹å’Œè¾¹ç»ˆç‚¹çš„ä¿¡æ¯
 		newVertexSet[minPowerEdge->getTo()->getNumber()] = 1;
 		newEdgeSet.push_back(minPowerEdge);
 	}
 
-	//Êä³öËùÓĞ·ûºÏÌõ¼şµÄ±ß£¬¼´ÊÇ×îĞ¡Éú³ÉÊ÷
+	//è¾“å‡ºæ‰€æœ‰ç¬¦åˆæ¡ä»¶çš„è¾¹ï¼Œå³æ˜¯æœ€å°ç”Ÿæˆæ ‘
 	for each (shared_ptr<edge> eg in newEdgeSet)
-		cout << "´Ó" << eg->getFrom()->getName() << "µ½"
-			 << eg->getTo()->getName() << "ĞŞÒ»ÌõÂ·" << endl;
+		cout << "ä»" << eg->getFrom()->getName() << "åˆ°"
+			 << eg->getTo()->getName() << "ä¿®ä¸€æ¡è·¯" << endl;
 
 }
 
@@ -135,112 +135,112 @@ void distributionGraph::miniDistanse(){
 	if (isGraphEmpty())
 		return;
 
-	cout << "ÇëÊäÈëÒª²éÑ¯µÄÁ½¸ö¾°µãµÄÃû³Æ£º";
+	cout << "è¯·è¾“å…¥è¦æŸ¥è¯¢çš„ä¸¤ä¸ªæ™¯ç‚¹çš„åç§°ï¼š";
 	string from, to;
-	cin >> from >> to; //ÔİÊ±Ä¬ÈÏÊäÈëÕıÈ·
+	cin >> from >> to; //æš‚æ—¶é»˜è®¤è¾“å…¥æ­£ç¡®
 	if (from == to) {
 		cout << from << " -> " << to << endl;
-		cout << "×î¶Ì¾àÀë£º" << 0 << endl;
+		cout << "æœ€çŸ­è·ç¦»ï¼š" << 0 << endl;
 		return;
 	}
 
-	unsigned int f0 = vertexAdj->at(from)->getNumber();//Æğµã±àºÅ
-	unsigned int t1 = vertexAdj->at(to)->getNumber();  //ÖÕµã±àºÅ
-	vector<unsigned int> shortPathTable(vertexNumber+1); //±íÊ¾V0µ½Vw¸÷¶¥µãµÄ×î¶ÌÂ·¾¶È¨ÖµºÍ
-	vector<unsigned int> path(vertexNumber+1); //±íÊ¾V0µ½Vw¸÷¶¥µãµÄÇ°Çı¶¥µãÏÂ±êÖµ
-	shortedstPathDijkstra(f0, path, shortPathTable);   //µÏ½ÜË¹ÌØÀ­Ëã·¨Ñ°ÕÒ×î¶ÌÂ·¾¶
+	unsigned int f0 = vertexAdj->at(from)->getNumber();//èµ·ç‚¹ç¼–å·
+	unsigned int t1 = vertexAdj->at(to)->getNumber();  //ç»ˆç‚¹ç¼–å·
+	vector<unsigned int> shortPathTable(vertexNumber+1); //è¡¨ç¤ºV0åˆ°Vwå„é¡¶ç‚¹çš„æœ€çŸ­è·¯å¾„æƒå€¼å’Œ
+	vector<unsigned int> path(vertexNumber+1); //è¡¨ç¤ºV0åˆ°Vwå„é¡¶ç‚¹çš„å‰é©±é¡¶ç‚¹ä¸‹æ ‡å€¼
+	shortedstPathDijkstra(f0, path, shortPathTable);   //è¿ªæ°æ–¯ç‰¹æ‹‰ç®—æ³•å¯»æ‰¾æœ€çŸ­è·¯å¾„
 
-	outPutShortestPath(t1, path, shortPathTable);      //Êä³öÁ½¾°µã×î¶ÌÂ·¾¶ºÍ×î¶Ì¾àÀë
+	outPutShortestPath(t1, path, shortPathTable);      //è¾“å‡ºä¸¤æ™¯ç‚¹æœ€çŸ­è·¯å¾„å’Œæœ€çŸ­è·ç¦»
 }
 
-//Êä³öµ¼ÓÎÏßÂ·Í¼
+//è¾“å‡ºå¯¼æ¸¸çº¿è·¯å›¾
 void distributionGraph::creatTourSortGraph() {
 	
-	//ÅĞ¶ÏÍ¼ÊÇ·ñÎª¿Õ
+	//åˆ¤æ–­å›¾æ˜¯å¦ä¸ºç©º
 	if (isGraphEmpty())
 		return;
 
 	auto& rTourGuide = *tourGuide;
-	//·Çµİ¹éÕ»¸¨ÖúÉî¶ÈÓÅÏÈ±éÀú,²¢°ÑÂ·ÏßÍ¼¼òµ¥µØ´æ´¢ÔÚtourGuideÖĞ
+	//éé€’å½’æ ˆè¾…åŠ©æ·±åº¦ä¼˜å…ˆéå†,å¹¶æŠŠè·¯çº¿å›¾ç®€å•åœ°å­˜å‚¨åœ¨tourGuideä¸­
 	DFSTraverse(rTourGuide);
 
 	auto lvcbg = rTourGuide.begin();
 	auto lvced = rTourGuide.end();
-	//´òÓ¡ËùÓĞ±éÀúÂ·ÉÏ¾­ÀúµÄ½Úµã
+	//æ‰“å°æ‰€æœ‰éå†è·¯ä¸Šç»å†çš„èŠ‚ç‚¹
 	cout << (*lvcbg)->getName();
 	while (++lvcbg != lvced)
 		cout << " --> " << (*lvcbg)->getName();
 	cout << endl;
 }
 
-//Éî¶ÈÓÅÏÈ±éÀú
+//æ·±åº¦ä¼˜å…ˆéå†
 void distributionGraph::DFSTraverse(list<shared_ptr<vertex>>& rTourGuide) {
 
-	stack<shared_ptr<vertex>> stackVertex; //´æ´¢Â·¾¶
-	size_t         count = 1;   //ÒÑ·¢ÏÖµÄ¾°µãÊıÁ¿
+	stack<shared_ptr<vertex>> stackVertex; //å­˜å‚¨è·¯å¾„
+	size_t         count = 1;   //å·²å‘ç°çš„æ™¯ç‚¹æ•°é‡
 
-	//Ñ¡ÔñÒ»¸ö¾°µã¿ªÊ¼£¬²¢Ñ¹ÈëÕ»,Ìí¼Ó½øÂ·ÏßÍ¼
+	//é€‰æ‹©ä¸€ä¸ªæ™¯ç‚¹å¼€å§‹ï¼Œå¹¶å‹å…¥æ ˆ,æ·»åŠ è¿›è·¯çº¿å›¾
 	shared_ptr<vertex> pCurrentVertex = (*vertexAdj)[(*vertexNames)[1]];
 	pCurrentVertex->setVisited(true);
 	stackVertex.push(pCurrentVertex);
 	rTourGuide.push_back(pCurrentVertex);
 
-	//Õ»ÖĞ»¹ÓĞµãËµÃ÷»¹ÓĞĞ©±ßÃ»ÓĞ³¢ÊÔ
+	//æ ˆä¸­è¿˜æœ‰ç‚¹è¯´æ˜è¿˜æœ‰äº›è¾¹æ²¡æœ‰å°è¯•
 	while (!stackVertex.empty()) {
 
-		const shared_ptr<list<weak_ptr<edge>>> pAulEdgeAdj = stackVertex.top()->getEdgeAdj();//ÒÔ¸Ã¾°µãÎª³ö¶ÈµÄ±ß
-		auto ile = pAulEdgeAdj->begin();   //ÆğÊ¼±ßiterator
+		const shared_ptr<list<weak_ptr<edge>>> pAulEdgeAdj = stackVertex.top()->getEdgeAdj();//ä»¥è¯¥æ™¯ç‚¹ä¸ºå‡ºåº¦çš„è¾¹
+		auto ile = pAulEdgeAdj->begin();   //èµ·å§‹è¾¹iterator
 		auto ileEnd = pAulEdgeAdj->end();
 
-		//±éÀúËùÓĞ¿ÉÄÜ¾­¹ıµÄ±ß
+		//éå†æ‰€æœ‰å¯èƒ½ç»è¿‡çš„è¾¹
 		while (ile != ileEnd) {
-			//ÅĞ¶ÏÊÇ·ñ·ÃÎÊ¹ı¸Ã±ßÈë¶È¾°µã
-			//Èç¹û¸Ã¾°µãÃ»ÓĞ±»·ÃÎÊ¹ı£¬½«¸Ã¾°µã×´Ì¬¸Ä±ä£¬²¢Ñ¹ÈëÕ»£¬Ìî½øÂ·ÏßÍ¼
+			//åˆ¤æ–­æ˜¯å¦è®¿é—®è¿‡è¯¥è¾¹å…¥åº¦æ™¯ç‚¹
+			//å¦‚æœè¯¥æ™¯ç‚¹æ²¡æœ‰è¢«è®¿é—®è¿‡ï¼Œå°†è¯¥æ™¯ç‚¹çŠ¶æ€æ”¹å˜ï¼Œå¹¶å‹å…¥æ ˆï¼Œå¡«è¿›è·¯çº¿å›¾
 			if (!(*ile).lock()->getTo()->isVisited()) {
-				pCurrentVertex = (*ile).lock()->getTo(); //Ò»°ãÈ·¶¨ (*ile).lock()²»ÊÇ¿ÕĞüÖ¸Õë
+				pCurrentVertex = (*ile).lock()->getTo(); //ä¸€èˆ¬ç¡®å®š (*ile).lock()ä¸æ˜¯ç©ºæ‚¬æŒ‡é’ˆ
 				pCurrentVertex->setVisited(true);
 				stackVertex.push(pCurrentVertex);
 				rTourGuide.push_back(pCurrentVertex);
 				
-				if (++count >= vertexAdj->size()) //Èç¹û·ÃÎÊ¹ıËùÓĞµÄ¾°µã£¬ÍË³ö±éÀú
+				if (++count >= vertexAdj->size()) //å¦‚æœè®¿é—®è¿‡æ‰€æœ‰çš„æ™¯ç‚¹ï¼Œé€€å‡ºéå†
 					return;
 
 				break;
 			}
-			else {			//ÈôÓĞ·ÃÎÊ¹ıÕâ¸ö¾°µãiterator++
+			else {			//è‹¥æœ‰è®¿é—®è¿‡è¿™ä¸ªæ™¯ç‚¹iterator++
 				++ile;
 			}
 		}
-		//Èç¹ûÊÇÒòÎª±éÀúÎŞ¹ûÍË³öÉÏ±ßµÄÑ­»·£¬pop¸¨ÖúÕ»µÄ¾°µã
+		//å¦‚æœæ˜¯å› ä¸ºéå†æ— æœé€€å‡ºä¸Šè¾¹çš„å¾ªç¯ï¼Œpopè¾…åŠ©æ ˆçš„æ™¯ç‚¹
 		if (ile == ileEnd) {
 			stackVertex.pop();
-			if (!stackVertex.empty()) //popºóÕ»¶¥µÄ¾°µã½«»áÔÙ´Î±»·ÃÎÊ
+			if (!stackVertex.empty()) //popåæ ˆé¡¶çš„æ™¯ç‚¹å°†ä¼šå†æ¬¡è¢«è®¿é—®
 				rTourGuide.push_back(stackVertex.top());
 		}
 	}
 
-	//¸üĞÂËùÓĞµãµÄ·ÃÎÊ×´Ì¬¡£
+	//æ›´æ–°æ‰€æœ‰ç‚¹çš„è®¿é—®çŠ¶æ€ã€‚
 	updateVertexVisited();
 }
 
-//ÅĞ¶Ïµ¼ÓÎÏßÂ·Í¼ÓĞÎŞ»ØÂ·
+//åˆ¤æ–­å¯¼æ¸¸çº¿è·¯å›¾æœ‰æ— å›è·¯
 void distributionGraph::topoSort() {
 
-	//ÅĞ¶ÏÍ¼ÊÇ·ñÎª¿ÕºÍµ¼ÓÎÍ¼ÊÇ·ñÎª¿Õ
+	//åˆ¤æ–­å›¾æ˜¯å¦ä¸ºç©ºå’Œå¯¼æ¸¸å›¾æ˜¯å¦ä¸ºç©º
 	if (isGraphEmpty())
 		return;
 
 	if (tourGuide->empty())
 		DFSTraverse(*tourGuide);
 
-	//ÍØÆËÅÅĞò·½·¨
-	//ÄÚ²¿Âß¼­,·µ»ØÖµÎªvector<string>*
+	//æ‹“æ‰‘æ’åºæ–¹æ³•
+	//å†…éƒ¨é€»è¾‘,è¿”å›å€¼ä¸ºvector<string>*
 	vector<int> result(vertexNumber+1);
 	toposort(result);
 	for (unsigned i = 1; i <= vertexNumber; ++i)
 		if (result[i] > 0) {
-			cout << "Í¼ÖĞÓĞ»ØÂ·" << endl;
-			//Êä³ö»·Â·
+			cout << "å›¾ä¸­æœ‰å›è·¯" << endl;
+			//è¾“å‡ºç¯è·¯
 			auto& rNames = *vertexNames;
 			for (unsigned j = i; j <= vertexNumber; ++j)
 				if (result[j] > 0)
@@ -251,14 +251,14 @@ void distributionGraph::topoSort() {
 		}
 	
 	if (result[0] == 0) {
-		cout << "Í¼ÖĞÃ»ÓĞ»ØÂ·" << endl;
+		cout << "å›¾ä¸­æ²¡æœ‰å›è·¯" << endl;
 	}
 
-	//±éÀúµ¼ÓÎÍ¼·½·¨
+	//éå†å¯¼æ¸¸å›¾æ–¹æ³•
 	//vector<string> result;
-	//findLoopUsingDFS(result);	//±éÀúµ¼ÓÎÍ¼µÃµ½
+	//findLoopUsingDFS(result);	//éå†å¯¼æ¸¸å›¾å¾—åˆ°
 	//if (!result.empty()) {
-	//	cout << "Í¼ÖĞÓĞ»ØÂ·:" << endl;
+	//	cout << "å›¾ä¸­æœ‰å›è·¯:" << endl;
 	//	for each (string var in result){
 	//		cout << var;
 	//	}
@@ -266,9 +266,9 @@ void distributionGraph::topoSort() {
 	//}
 }
 
-//ÍØÆËÅÅĞò·½·¨£¬Ö»ÎªÕâµÀÌâ¶øĞ´µÄ¡£
+//æ‹“æ‰‘æ’åºæ–¹æ³•ï¼Œåªä¸ºè¿™é“é¢˜è€Œå†™çš„ã€‚
 void distributionGraph::toposort(vector<int>& result) {
-	//³õÊ¼»¯µ¼ÓÎÍ¼ÖĞµÄ¾°µãÈë¶È
+	//åˆå§‹åŒ–å¯¼æ¸¸å›¾ä¸­çš„æ™¯ç‚¹å…¥åº¦
 	shared_ptr<matrix> map = make_shared<matrix>
 		(vertexNumber + 1, vector<unsigned>(vertexNumber + 1, 0));
 	shared_ptr<vector<int>> indegree = make_shared<vector<int>>(vertexNumber + 1, 0);
@@ -279,29 +279,29 @@ void distributionGraph::toposort(vector<int>& result) {
 	auto  iy = it;
 	auto  itEnd = tourGuide->end();
 	unsigned  startNumber = (*(it))->getNumber();
-	//³õÊ¼»¯µ¼ÓÎÍ¼µÄÁÚ½Ó¾ØÕó
+	//åˆå§‹åŒ–å¯¼æ¸¸å›¾çš„é‚»æ¥çŸ©é˜µ
 	while (++iy != itEnd) {
 		unsigned from = (*it++)->getNumber();
 		unsigned in = (*iy)->getNumber();
-		++rMap[from][in];//È¨Öµ+1
-		++rIndegree[in];//Èë¶È+1
+		++rMap[from][in];//æƒå€¼+1
+		++rIndegree[in];//å…¥åº¦+1
 	}
 	
-	//ÏÂ±ßÕâ¶Î×¨ÃÅÎª±¾ÌâĞ´
+	//ä¸‹è¾¹è¿™æ®µä¸“é—¨ä¸ºæœ¬é¢˜å†™
 	rIndegree[startNumber] = -1;
 	for (unsigned k = 1; k <= vertexNumber; k++) {
 		if (rMap[startNumber][k] == 1)
 			--rIndegree[k];
 		rMap[k][startNumber] = 0;
 	}
-	//½øĞĞÍØÆËÅÅĞò
-	for (unsigned i = 1; i <= vertexNumber; ++i) //±éÀún´Î
-		for (unsigned j = 1; j <= vertexNumber; ++j) //ÕÒ³öÈë¶ÈÎª0µÄ½Úµã
+	//è¿›è¡Œæ‹“æ‰‘æ’åº
+	for (unsigned i = 1; i <= vertexNumber; ++i) //éå†næ¬¡
+		for (unsigned j = 1; j <= vertexNumber; ++j) //æ‰¾å‡ºå…¥åº¦ä¸º0çš„èŠ‚ç‚¹
 			if (rIndegree[j] == 0){
 
-				rIndegree[j]--;//Èë¶È¼õÎª-1£¬ËµÃ÷ÒÑÅÅĞò
+				rIndegree[j]--;//å…¥åº¦å‡ä¸º-1ï¼Œè¯´æ˜å·²æ’åº
 
-				for (unsigned k = 1; k <= vertexNumber; k++) //É¾³ıÓë¸Ã½Úµã¹ØÁªµÄ±ß
+				for (unsigned k = 1; k <= vertexNumber; k++) //åˆ é™¤ä¸è¯¥èŠ‚ç‚¹å…³è”çš„è¾¹
 					if (rMap[j][k] == 1)
 						rIndegree[k]--;
 				break;
@@ -310,21 +310,21 @@ void distributionGraph::toposort(vector<int>& result) {
 	result = rIndegree;
 }
 
-//Ê¹ÓÃÉî¶ÈÓÅÏÈ·½·¨½øĞĞÍØÆËÅÅĞò
-void distributionGraph::findLoopUsingDFS(vector<string>& loop){//loop´æ´¢»ØÂ·
-	//µ¼ÓÎÍ¼²»ÄÜÊÇ¿ÕµÄ
+//ä½¿ç”¨æ·±åº¦ä¼˜å…ˆæ–¹æ³•è¿›è¡Œæ‹“æ‰‘æ’åº
+void distributionGraph::findLoopUsingDFS(vector<string>& loop){//loopå­˜å‚¨å›è·¯
+	//å¯¼æ¸¸å›¾ä¸èƒ½æ˜¯ç©ºçš„
 	if (tourGuide->empty())
 		DFSTraverse(*tourGuide);
 
 	auto tourIt = tourGuide->begin();
 	auto pCurrentVertex = *tourIt;
-	pCurrentVertex->setVisited(true); //ÉèÖÃÒÑ¾­·ÃÎÊµÄ±ê¼Ç
+	pCurrentVertex->setVisited(true); //è®¾ç½®å·²ç»è®¿é—®çš„æ ‡è®°
 	while (true) {
-		//Íê³Éµ¼ÓÎÍ¼µÄ±éÀú
+		//å®Œæˆå¯¼æ¸¸å›¾çš„éå†
 		if (++tourIt == tourGuide->end())
 			break;
 		if ((*tourIt)->isVisited()) {
-			//Èç¹û³öÏÖÁË»ØÂ·£¬Ç°Ì½Ö±µ½Î´·ÃÎÊ½Úµã
+			//å¦‚æœå‡ºç°äº†å›è·¯ï¼Œå‰æ¢ç›´åˆ°æœªè®¿é—®èŠ‚ç‚¹
 			loop.push_back(pCurrentVertex->getName());
 			do {
 				pCurrentVertex = *tourIt;
@@ -338,15 +338,15 @@ void distributionGraph::findLoopUsingDFS(vector<string>& loop){//loop´æ´¢»ØÂ·
 	}
 }
 
-//ÅĞ¶ÏÊÇ·ñ´æÔÚf->tµÄ±ß
+//åˆ¤æ–­æ˜¯å¦å­˜åœ¨f->tçš„è¾¹
 inline bool distributionGraph::isEdge(const string& f, const string& t) {
 	return vertexAdj->at(f)->isAccessDirect(vertexAdj->at(t));
 }
 
-//Êä³öÍ¼µÄÁÚ½Ó±í
+//è¾“å‡ºå›¾çš„é‚»æ¥è¡¨
 void distributionGraph::outputGraph(){
 
-	//ÅĞ¶ÏÍ¼ÊÇ·ñÎª¿Õ
+	//åˆ¤æ–­å›¾æ˜¯å¦ä¸ºç©º
 	if (isGraphEmpty())
 		return;
 	vertexMtx = make_shared<matrix>(vertexNumber + 1, vector<unsigned>(vertexNumber + 1, 32767));
@@ -355,7 +355,7 @@ void distributionGraph::outputGraph(){
 	auto& rVertexNames = *vertexNames;
 	auto size = vertexAdj->size();
 
-	//±éÀúÊä³ö
+	//éå†è¾“å‡º
 	for each (string str in rVertexNames)
 		printf("%8s", str.c_str());
 	cout << endl;
@@ -368,14 +368,14 @@ void distributionGraph::outputGraph(){
 	}
 }
 
-//´´½¨Í¼µÄÁÚ½Ó±í´æ´¢
+//åˆ›å»ºå›¾çš„é‚»æ¥è¡¨å­˜å‚¨
 void distributionGraph::createGraph() {
 
 	auto& rVertexAdj = *vertexAdj;
-	//´ò¿ª´æÓĞ¾°ÇøĞÅÏ¢µÄÎÄ¼ş
+	//æ‰“å¼€å­˜æœ‰æ™¯åŒºä¿¡æ¯çš„æ–‡ä»¶
 	ifstream in("info.txt");
 
-	//¶ÁÈ¡½ÚµãÊıºÍ±ßÊı,×Ö·û´®×ªÊı×Ö
+	//è¯»å–èŠ‚ç‚¹æ•°å’Œè¾¹æ•°,å­—ç¬¦ä¸²è½¬æ•°å­—
 	char c[128];
 	char n[16];
 	memset(n, '\0', 16);
@@ -384,10 +384,10 @@ void distributionGraph::createGraph() {
 	memset(n, '\0', 16);
 	in.getline(n, 16);
 	edgeNumber = atoi(n);
-	cout << "ÇëÊäÈë¶¨µãÊıºÍ±ßÊı£º" << vertexNumber << ' ' << edgeNumber << endl;
+	cout << "è¯·è¾“å…¥å®šç‚¹æ•°å’Œè¾¹æ•°ï¼š" << vertexNumber << ' ' << edgeNumber << endl;
 
-	//Ñ­»·¶ÁÈ¡ÎÄ¼şÖĞµÄ¾°µãÃû×ÖĞÅÏ¢
-	cout << "\n\t\t\"ÇëÊäÈë¸÷¶¥µãµÄĞÅÏ¢\"\nÇëÊäÈë¸÷¶¥µãµÄÃû×Ö£º";
+	//å¾ªç¯è¯»å–æ–‡ä»¶ä¸­çš„æ™¯ç‚¹åå­—ä¿¡æ¯
+	cout << "\n\t\t\"è¯·è¾“å…¥å„é¡¶ç‚¹çš„ä¿¡æ¯\"\nè¯·è¾“å…¥å„é¡¶ç‚¹çš„åå­—ï¼š";
 	
 	vertexNames->push_back(" ");
 	
@@ -408,13 +408,13 @@ void distributionGraph::createGraph() {
 	}
 	cout << endl;
 	
-	//¶ÁÈ¡±ßĞÅÏ¢
+	//è¯»å–è¾¹ä¿¡æ¯
 	for (unsigned i = 1; i <= edgeNumber; ++i) {
 		string f, t;
 		int power;
-		cout << "ÇëÊäÈëµÚ" << i << "Ìõ±ßµÄÁ½¸ö¶¥µãÒÔ¼°¸Ã±ßµÄÈ¨Öµ£º";
+		cout << "è¯·è¾“å…¥ç¬¬" << i << "æ¡è¾¹çš„ä¸¤ä¸ªé¡¶ç‚¹ä»¥åŠè¯¥è¾¹çš„æƒå€¼ï¼š";
 		
-		//»ñµÃ±ßµÄÆğµã¡¢ÖÕµã¡¢È¨Öµ
+		//è·å¾—è¾¹çš„èµ·ç‚¹ã€ç»ˆç‚¹ã€æƒå€¼
 		memset(c, '\0', 128);
 		in.getline(c, 128, ' ');
 		f = c;
@@ -428,7 +428,7 @@ void distributionGraph::createGraph() {
 		power = atoi(n);
 		cout << power << endl;
 
-		//Îª½ÚµãºÍ±ßÌí¼Ó¹ØÁª¹ØÏµ
+		//ä¸ºèŠ‚ç‚¹å’Œè¾¹æ·»åŠ å…³è”å…³ç³»
 		shared_ptr<vertex> from = rVertexAdj[f];
 		shared_ptr<vertex> to = rVertexAdj[t];
 		shared_ptr<edge> e1 = make_shared<edge>(from, to, power);
@@ -441,7 +441,7 @@ void distributionGraph::createGraph() {
 	in.close();
 }
 
-//µÏ½ÜË¹ÌØÀ­Ëã·¨Çó×î¶ÌÂ·¾¶
+//è¿ªæ°æ–¯ç‰¹æ‹‰ç®—æ³•æ±‚æœ€çŸ­è·¯å¾„
 void distributionGraph::shortedstPathDijkstra( 
 	unsigned v0, vector<unsigned>& path, vector<unsigned>& shortPathTable)
 {
@@ -450,35 +450,35 @@ void distributionGraph::shortedstPathDijkstra(
 
 	auto& rMatrix = *vertexMtx;
 	unsigned v, w, k, min, num = vertexNumber+1;
-	vector<int> final(num); //final[k]=1±íÊ¾ÇóµÃv0µ½kµãµÄ×î¶ÌÈ¨ÖµÁË
+	vector<int> final(num); //final[k]=1è¡¨ç¤ºæ±‚å¾—v0åˆ°kç‚¹çš„æœ€çŸ­æƒå€¼äº†
 	for (v = 1; v < num; ++v) {
 		final[v] = 0;
 		shortPathTable[v] = rMatrix[v0][v];
-		path[v] =v0; //³õÊ¼¶¨ÒåËùÓĞµãµÄÇ°Çı¶¼ÊÇv0£¬Ö®ºóÖğ½¥¸üĞÂ
+		path[v] =v0; //åˆå§‹å®šä¹‰æ‰€æœ‰ç‚¹çš„å‰é©±éƒ½æ˜¯v0ï¼Œä¹‹åé€æ¸æ›´æ–°
 	}
-	final[v0] = 1;	//v0µ½v0²»ĞèÒªÇóÂ·¾¶
+	final[v0] = 1;	//v0åˆ°v0ä¸éœ€è¦æ±‚è·¯å¾„
 	path[v0] = 0;
-	//¿ªÊ¼Ö÷Ñ­»·£¬Ã¿´ÎÇóµÃv0µ½Ä³¸ö¾°µãµÄ×î¶ÌÂ·¾¶
+	//å¼€å§‹ä¸»å¾ªç¯ï¼Œæ¯æ¬¡æ±‚å¾—v0åˆ°æŸä¸ªæ™¯ç‚¹çš„æœ€çŸ­è·¯å¾„
 	for (v = 1; v < num; ++v) {
 		min = 65535;
-		for (w = 1; w < num; ++w) {//Ñ°ÕÒÀëv0×î½üµÄ¾°µã
+		for (w = 1; w < num; ++w) {//å¯»æ‰¾ç¦»v0æœ€è¿‘çš„æ™¯ç‚¹
 			if (!final[w] && shortPathTable[w] < min) {
 				k = w;
 				min = shortPathTable[w];
 			}
 		}
-		final[k] = 1; //½«Ä¿Ç°ÕÒµ½µÄ×î½üµÄ¾°µãÖÃÎª1,´ú±íÕÒ²»µ½´Óv0µ½kµã¸ü½üµÄÂ·ÁË
+		final[k] = 1; //å°†ç›®å‰æ‰¾åˆ°çš„æœ€è¿‘çš„æ™¯ç‚¹ç½®ä¸º1,ä»£è¡¨æ‰¾ä¸åˆ°ä»v0åˆ°kç‚¹æ›´è¿‘çš„è·¯äº†
 		for (w = 1; w <num;++w) {
-			//Èç¹ûÀëv0µã×î½üµÄkµã¾àÀë + kµãµ½wµã¾àÀë Ğ¡ÓÚv0µ½wµãµÄ¾àÀë£¬¸üĞÂ²¢¼ÇÂ¼
+			//å¦‚æœç¦»v0ç‚¹æœ€è¿‘çš„kç‚¹è·ç¦» + kç‚¹åˆ°wç‚¹è·ç¦» å°äºv0åˆ°wç‚¹çš„è·ç¦»ï¼Œæ›´æ–°å¹¶è®°å½•
 			if (!final[w] && (min + rMatrix[k][w]) < shortPathTable[w]) {
-				shortPathTable[w] = min + rMatrix[k][w];  //¸üĞÂ
-				path[w] = k;                                //¼ÇÂ¼wµãµÄÇ°ÇıÊÇkµã
+				shortPathTable[w] = min + rMatrix[k][w];  //æ›´æ–°
+				path[w] = k;                                //è®°å½•wç‚¹çš„å‰é©±æ˜¯kç‚¹
 			}
 		}
 	}
 }
 
-//Êä³ö×î¶ÌÂ·¾¶ºÍ×î¶Ì¾àÀë
+//è¾“å‡ºæœ€çŸ­è·¯å¾„å’Œæœ€çŸ­è·ç¦»
 void distributionGraph::outPutShortestPath(unsigned t1,
 	vector<unsigned>& path, vector<unsigned>& shortPathTable)
 {
@@ -491,27 +491,27 @@ void distributionGraph::outPutShortestPath(unsigned t1,
 	} while (v != 0);
 
 	v = result.size() - 1;
-	while (v > 0) //ÆğµãÖÕµã²»Æ¥Åä
+	while (v > 0) //èµ·ç‚¹ç»ˆç‚¹ä¸åŒ¹é…
 		cout << rVertexNames[result[v--]] << " -> " << rVertexNames[result[v]] << endl;
 
-	cout << "×î¶Ì¾àÀë£º" << shortPathTable[t1] << endl;
+	cout << "æœ€çŸ­è·ç¦»ï¼š" << shortPathTable[t1] << endl;
 }
 
-//ÅĞ¶ÏÍ¼ÊÇ·ñ¿Õ
+//åˆ¤æ–­å›¾æ˜¯å¦ç©º
 inline bool distributionGraph::isGraphEmpty() {
-	//ÅĞ¶ÏÈôvertexAdjÊÇ¿ÕµÄ£¬¾ÍÍË³öÖØĞÂ½øÈë¿ØÖÆÑ¡Ïî
+	//åˆ¤æ–­è‹¥vertexAdjæ˜¯ç©ºçš„ï¼Œå°±é€€å‡ºé‡æ–°è¿›å…¥æ§åˆ¶é€‰é¡¹
 	if (!vertexAdj->empty())
 		return false;
 
-	cout << "´íÎó!\nÄã»¹Ã»ÓĞ´´½¨¾°Çø¾°µã·Ö²¼Í¼£¬ÇëÊäÈë 1 £¡" << endl;
+	cout << "é”™è¯¯!\nä½ è¿˜æ²¡æœ‰åˆ›å»ºæ™¯åŒºæ™¯ç‚¹åˆ†å¸ƒå›¾ï¼Œè¯·è¾“å…¥ 1 ï¼" << endl;
 	return true;
 }
 
-//ÁÚ½ÓÁ´±í×ªÁÚ½Ó¾ØÕó
+//é‚»æ¥é“¾è¡¨è½¬é‚»æ¥çŸ©é˜µ
 void distributionGraph::Adj2Mtx(matrix& rMatrix){
 	size_t         size = vertexAdj->size();
 	
-	//±éÀúËùÓĞµÄ±ß£¬¸üĞÂÁÚ½Ó¾ØÕóµÄÊı¾İ
+	//éå†æ‰€æœ‰çš„è¾¹ï¼Œæ›´æ–°é‚»æ¥çŸ©é˜µçš„æ•°æ®
 	for each (shared_ptr<edge> eg in *pEdgeVec){
 		unsigned int from = eg->getFrom()->getNumber();
 		unsigned int to   = eg->getTo()->getNumber();
@@ -520,13 +520,13 @@ void distributionGraph::Adj2Mtx(matrix& rMatrix){
 	}
 }
 
-//¸üĞÂËùÓĞµãµÄ·ÃÎÊ×´Ì¬
+//æ›´æ–°æ‰€æœ‰ç‚¹çš„è®¿é—®çŠ¶æ€
 inline void distributionGraph::updateVertexVisited() {
 	for each (auto& var in *vertexAdj)
 		var.second->setVisited(false);
 }
 
-//¿ìËÙÅÅĞò°´¾°µãÊÜ»¶Ó­¶È [from, to)
+//å¿«é€Ÿæ’åºæŒ‰æ™¯ç‚¹å—æ¬¢è¿åº¦ [from, to)
 void distributionGraph::quickSort(vector<shared_ptr<vertex>>& set, unsigned from, unsigned to) {
 	if (to - from < 4) {
 		insertSort(set, from, to);
@@ -553,7 +553,7 @@ void distributionGraph::quickSort(vector<shared_ptr<vertex>>& set, unsigned from
 		quickSort(set, left, to);
 }
 
-//²åÈëÅÅĞò°´¾°µãÊÜ»¶Ó­¶È
+//æ’å…¥æ’åºæŒ‰æ™¯ç‚¹å—æ¬¢è¿åº¦
 void distributionGraph::insertSort(vector<shared_ptr<vertex>>& set, unsigned from, unsigned to) {
 	if (to - from <= 1)
 		return;
@@ -562,7 +562,7 @@ void distributionGraph::insertSort(vector<shared_ptr<vertex>>& set, unsigned fro
 			swap(set[j - 1], set[j]);
 }
 
-//¹¹Ôìº¯Êı
+//æ„é€ å‡½æ•°
 distributionGraph::distributionGraph()
 	:vertexAdj(make_shared<unordered_map<string, shared_ptr<vertex>>>()),
 	pEdgeVec(make_shared<vector<shared_ptr<edge>>>()),
@@ -573,7 +573,7 @@ distributionGraph::distributionGraph()
 }
 
 
-//ÔÚ¾°µã¼°Æä¼ò½éÖĞËÑË÷¹Ø¼ü×Ö
+//åœ¨æ™¯ç‚¹åŠå…¶ç®€ä»‹ä¸­æœç´¢å…³é”®å­—
 void distributionGraph::queryWords(const string& key, vector<shared_ptr<vertex>>& vtHasInfo) {
 	for each (auto& var in *vertexAdj) {
 		const string& name = var.first;
@@ -584,7 +584,7 @@ void distributionGraph::queryWords(const string& key, vector<shared_ptr<vertex>>
 	}
 }
 
-//kmpËã·¨Æ¥ÅäÍ¼¾°µãÃû³Æ»òÕß¼ä½Ó£¬Èç¹ûcontentÖĞº¬ÓĞtarget£¬·µ»Øtrue
+//kmpç®—æ³•åŒ¹é…å›¾æ™¯ç‚¹åç§°æˆ–è€…é—´æ¥ï¼Œå¦‚æœcontentä¸­å«æœ‰targetï¼Œè¿”å›true
 bool distributionGraph::kmp(const string& target, const string& content) {
 	unsigned tgLen = target.size();
 	unsigned ctLen = content.size();
@@ -592,11 +592,11 @@ bool distributionGraph::kmp(const string& target, const string& content) {
 		return false;
 	}
 	vector<int> vi;
-	computePrefixFunction(vi, target); //kmpÇ°×ºº¯Êı
+	computePrefixFunction(vi, target); //kmpå‰ç¼€å‡½æ•°
 	int q = -1;
 	for (unsigned i = 0; i < ctLen; ++i) {
 		while (q > -1 && target[q + 1] != content[i])
-			q = vi[q]; //Èç¹û³öÏÖ²»ÏàµÈµÄ£¬ĞŞÕı
+			q = vi[q]; //å¦‚æœå‡ºç°ä¸ç›¸ç­‰çš„ï¼Œä¿®æ­£
 		if (target[q + 1] == content[i])
 			++q;
 		if (q == tgLen-1)
@@ -605,7 +605,7 @@ bool distributionGraph::kmp(const string& target, const string& content) {
 	return false;
 }
 
-//kmpÇ°×ºº¯Êı
+//kmpå‰ç¼€å‡½æ•°
 void distributionGraph::computePrefixFunction(vector<int>& vi, const string& str) {
 	vi.resize(str.size());
 	unsigned m = str.size();

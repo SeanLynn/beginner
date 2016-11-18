@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "parkingLot.h"
 #include <string>
 #include <iostream>
@@ -9,7 +9,7 @@ using std::cout;
 using std::endl;
 using std::cin;
 using std::make_shared;
-//¹ÜÀí³ÌĞòÈë¿Ú
+//ç®¡ç†ç¨‹åºå…¥å£
 void parkingLot::management() {
 	while (true) {
 		printWelcome();
@@ -27,39 +27,39 @@ void parkingLot::management() {
 	}
 }
 
-//´òÓ¡»¶Ó­´Ê
+//æ‰“å°æ¬¢è¿è¯
 inline void parkingLot::printWelcome() {
-	cout << "\t\t** Í£³µ³¡¹ÜÀí³ÌĞò **\n";
+	cout << "\t\t** åœè½¦åœºç®¡ç†ç¨‹åº **\n";
 	cout << "============================================================\n";
 	cout << "**\t\t\t\t\t\t\t**\n";
-	cout << "**\tA --- Æû³µ ½ø ³µ³¡\tD --- Æû³µ ³ö ³µ³¡\t**\n";
+	cout << "**\tA --- æ±½è½¦ è¿› è½¦åœº\tD --- æ±½è½¦ å‡º è½¦åœº\t**\n";
 	cout << "**\t\t\t\t\t\t\t**\n";
-	cout << "**\t\t\tE --- ÍË³ö ³ÌĞò\t\t\t**\n";
+	cout << "**\t\t\tE --- é€€å‡º ç¨‹åº\t\t\t**\n";
 	cout << "============================================================" << endl;
-	cout << " ÇëÑ¡Ôñ£º<A,D,E>:";
+	cout << " è¯·é€‰æ‹©ï¼š<A,D,E>:";
 }
 
-//Æû³µ³ö³µ³¡º¯Êı½Ó¿Ú£¬Ö»¶ÔÊı¾İ½á¹¹×÷Î¢Ğ¡µÄ¸Ä±ä
+//æ±½è½¦å‡ºè½¦åœºå‡½æ•°æ¥å£ï¼Œåªå¯¹æ•°æ®ç»“æ„ä½œå¾®å°çš„æ”¹å˜
 void parkingLot::popBackCar() {
 	if (carStack.empty()) {
-		cout << "Í£³µ³¡ÊÇ¿ÕµÄ¡£\n" << endl;
+		cout << "åœè½¦åœºæ˜¯ç©ºçš„ã€‚\n" << endl;
 		//cout << "=========================================================" << endl;
 		return;
 	}
 	string lic;
-	cout << "³ö³¡³µÁ¾ÅÆºÅ£º";
+	cout << "å‡ºåœºè½¦è¾†ç‰Œå·ï¼š";
 	cin >> lic;
 
-	if (popBack(lic) && !carQueue.empty()) { //popBack³É¹¦²¢ÇÒ±ãµÀÉÏÓĞ³µ
+	if (popBack(lic) && !carQueue.empty()) { //popBackæˆåŠŸå¹¶ä¸”ä¾¿é“ä¸Šæœ‰è½¦
 		shared_ptr<car> r = carQueue.front();
-		r->start = std::chrono::system_clock::now(); //ÖØÖÃ½ø³¡Ê±¼ä
+		r->start = std::chrono::system_clock::now(); //é‡ç½®è¿›åœºæ—¶é—´
 		carQueue.pop();
-		cout << "½ø³¡³µÅÆÎª£º" << r->license << endl;
+		cout << "è¿›åœºè½¦ç‰Œä¸ºï¼š" << r->license << endl;
 		pushBack(r);
 	}
 }
 
-//Æû³µ³ö³µ³¡
+//æ±½è½¦å‡ºè½¦åœº
 bool parkingLot::popBack(const string& lic) {
 
 	std::stack<shared_ptr<car>> tempCarStack;
@@ -75,71 +75,71 @@ bool parkingLot::popBack(const string& lic) {
 		tempCarStack.push(tempCar);
 		carStack.pop();
 	}
-	//¸´Ô­carStack
+	//å¤åŸcarStack
 	while (!tempCarStack.empty()) {
 		carStack.push(tempCarStack.top());
 		tempCarStack.pop();
 	}
 
-	if (r == nullptr) //Èç¹ûÕÒ²»µ½licenceÎªlicµÄcar
+	if (r == nullptr) //å¦‚æœæ‰¾ä¸åˆ°licenceä¸ºlicçš„car
 		return false;
 
-	auto end = std::chrono::system_clock::now(); //³ö³¡Ê±¼ä
-	auto t = std::chrono::system_clock::to_time_t(end); //×ª»¯Ê±¼ä¸ñÊ½
-	auto parkingTime = std::chrono::duration_cast<std::chrono::seconds>(end - r->start).count();//Í£ÁôÊ±¼ä
+	auto end = std::chrono::system_clock::now(); //å‡ºåœºæ—¶é—´
+	auto t = std::chrono::system_clock::to_time_t(end); //è½¬åŒ–æ—¶é—´æ ¼å¼
+	auto parkingTime = std::chrono::duration_cast<std::chrono::seconds>(end - r->start).count();//åœç•™æ—¶é—´
 
-																								//³ö³¡Ê±¼ä×ª»»³É±¾µØÊ±¼ä
+																								//å‡ºåœºæ—¶é—´è½¬æ¢æˆæœ¬åœ°æ—¶é—´
 	char buf[32];
 	getLocalTime(t, buf);
 
-	cout << "ÏÂÃæÊÇÀë¿ªÍ£³µ³¡µÄ³µÁ¾ĞÅÏ¢£º" << endl;
-	cout << "³µÁ¾ÅÆºÅ£º" << r->license << endl;
-	cout << "³ö³¡µÄÊ±¿Ì:" << *buf << endl;
-	cout << "Í£³µÊ±³¤£º" << parkingTime << " seconds" << endl;//Í£ÁôÊ±¼ä
-	cout << "Í£³µ»¨·Ñ£º" << parkingCost(parkingTime) << " Ôª¡£\n" << endl;	//¼ÆËãÍ£³µÏû·Ñ
+	cout << "ä¸‹é¢æ˜¯ç¦»å¼€åœè½¦åœºçš„è½¦è¾†ä¿¡æ¯ï¼š" << endl;
+	cout << "è½¦è¾†ç‰Œå·ï¼š" << r->license << endl;
+	cout << "å‡ºåœºçš„æ—¶åˆ»:" << *buf << endl;
+	cout << "åœè½¦æ—¶é•¿ï¼š" << parkingTime << " seconds" << endl;//åœç•™æ—¶é—´
+	cout << "åœè½¦èŠ±è´¹ï¼š" << parkingCost(parkingTime) << " å…ƒã€‚\n" << endl;	//è®¡ç®—åœè½¦æ¶ˆè´¹
 																	//cout << "=========================================================" << endl;
 	return true;
 }
 
-//Æû³µ½ø³µ³¡
+//æ±½è½¦è¿›è½¦åœº
 void parkingLot::pushBackCar() {
-	//ÒÔÏÂÊäÈë³µÁ¾ĞÅÏ¢²¢´´½¨³µÁ¾
+	//ä»¥ä¸‹è¾“å…¥è½¦è¾†ä¿¡æ¯å¹¶åˆ›å»ºè½¦è¾†
 	string lic;
-	cout << "½ø³¡³µÅÆÎª£º";
+	cout << "è¿›åœºè½¦ç‰Œä¸ºï¼š";
 	cin >> lic;
 	auto time = std::chrono::system_clock::now();
 
-	//Ìí¼Ó½ø³µÁ¾Õ»£¬²¢Êä³öÏà¹ØĞÅÏ¢
+	//æ·»åŠ è¿›è½¦è¾†æ ˆï¼Œå¹¶è¾“å‡ºç›¸å…³ä¿¡æ¯
 	shared_ptr<car> r(new car(lic, time));
 	pushBack(r);
 }
 
-//Æû³µ½ø³µ³¡
+//æ±½è½¦è¿›è½¦åœº
 void parkingLot::pushBack(shared_ptr<car> r) {
 	if (carStack.size() < capacity) {
 		carStack.push(r);
-		auto t = std::chrono::system_clock::to_time_t(r->start); //°ÑÊ±¼ä×ª»»³ÉÊı×Ö
+		auto t = std::chrono::system_clock::to_time_t(r->start); //æŠŠæ—¶é—´è½¬æ¢æˆæ•°å­—
 		char buf[32];
 		getLocalTime(t, buf);
-		//Êä³ö³µÁ¾½ø³¡Ê±¼äĞÅÏ¢ºÍÎ»ÖÃĞÅÏ¢
-		cout << "½ø³¡µÄÊ±¿Ì£º" << buf;
-		cout << "¸Ã³µÒÑ½øÈëÍ£³µ³¡ÔÚ£º" << carStack.size() << "ºÅ³µµÀ\n" << endl;
+		//è¾“å‡ºè½¦è¾†è¿›åœºæ—¶é—´ä¿¡æ¯å’Œä½ç½®ä¿¡æ¯
+		cout << "è¿›åœºçš„æ—¶åˆ»ï¼š" << buf;
+		cout << "è¯¥è½¦å·²è¿›å…¥åœè½¦åœºåœ¨ï¼š" << carStack.size() << "å·è½¦é“\n" << endl;
 	}
 	else {
 		carQueue.push(r);
-		cout << "Í£³µ³¡ÒÑÂú£¬¸Ã³µÍ£ÔÚ±ãµÀÉÏ¡£\n" << endl;
+		cout << "åœè½¦åœºå·²æ»¡ï¼Œè¯¥è½¦åœåœ¨ä¾¿é“ä¸Šã€‚\n" << endl;
 	}
 	Sleep(500);
 	//cout << "=========================================================\n" << endl;
 }
 
 
-//¼ÆËãÍ£³µÏû·Ñ
+//è®¡ç®—åœè½¦æ¶ˆè´¹
 inline unsigned long long parkingLot::parkingCost(long long parkingTime) {
 	return (unsigned long long)parkingTime * 2;
 }
 
-//»ñµÃtËù´ú±íµÄ±¾µØÊ±¼ä
+//è·å¾—tæ‰€ä»£è¡¨çš„æœ¬åœ°æ—¶é—´
 inline void parkingLot::getLocalTime(__time64_t t, char* buf) {
 	struct tm newtime;
 	localtime_s(&newtime, &t);
