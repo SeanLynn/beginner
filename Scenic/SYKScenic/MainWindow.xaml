@@ -1,0 +1,233 @@
+﻿<Window x:Class="SYKScenic.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SYKScenic"
+        mc:Ignorable="d"
+        Title="MainWindow" Top="0" Height="750" Width="1200" Left="100">
+    <Window.Resources>
+        <local:Vertex x:Key="Vts"/>
+        <local:Edge x:Key="Egs"/>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1000" />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Row="0" Grid.Column="0">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="100"/>
+                <RowDefinition/>
+                <RowDefinition Height="150"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0" Grid.Column="0" Name="VEAdjustGrid">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="90"/>
+                    <ColumnDefinition Width="90"/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="90"/>
+                    <ColumnDefinition Width="120"/>
+                    <ColumnDefinition Width="90"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0" Grid.Column="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Label Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" Margin="12,25,12,0">
+                        景点名称:
+                    </Label>
+                    <TextBox Grid.Row="1" Grid.Column="0" Name="VertexName" HorizontalContentAlignment="Center" Margin="5,0,5,30"/>
+                </Grid>
+                <Grid Grid.Row="0" Grid.Column="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Label Grid.Row="0" Grid.Column="0" Target="{Binding ElementName=VertexPopularityTextBox}" HorizontalAlignment="Center" Margin="12,25,12,0">
+                        受欢迎度：
+                    </Label>
+                    <TextBox Grid.Row="1" Grid.Column="0" Name="VertexPopularityTextBox" HorizontalContentAlignment="Center" Margin="5,0,5,30">
+                        <TextBox.Text>
+                            <Binding Path="popularity" Source="{StaticResource Vts}"
+                             UpdateSourceTrigger="PropertyChanged" >
+                                <Binding.ValidationRules>
+                                    <local:Rule Min="0" Max="256"/>
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+                    </TextBox>
+                </Grid>
+                <Grid Grid.Row="0" Grid.Column="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="400"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Label Grid.Row="0" Grid.Column="0" Target="{Binding ElementName=VertexInfo}" VerticalAlignment="Bottom" HorizontalAlignment="Center">
+                        景点简介：
+                    </Label>
+                    <ScrollViewer Grid.Row="1" Grid.Column="0" VerticalScrollBarVisibility="Auto">
+                        <TextBox Grid.Row="1" Grid.Column="0" Name="VertexInfo" HorizontalContentAlignment="Center" Margin="5,0,5,0">
+                        </TextBox>
+                    </ScrollViewer>
+                    <CheckBox Name="HasRestArea" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">有无休息区</CheckBox>
+                    <CheckBox Name="HasWC" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">有无公测</CheckBox>
+
+                </Grid>
+                <Grid Grid.Column="3">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Label VerticalAlignment="Bottom" HorizontalAlignment="Center" Grid.Row="0">
+                        道路权值:
+                    </Label>
+                    <TextBox Grid.Row="1" Grid.Column="0" Name="EdgeDistance" HorizontalContentAlignment="Center" Margin="5,0,5,30">
+                        <TextBox.Text>
+                            <Binding Path="distance" Source="{StaticResource Egs}"
+                             UpdateSourceTrigger="PropertyChanged" >
+                                <Binding.ValidationRules>
+                                    <local:Rule Min="0" Max="256"/>
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+                    </TextBox>
+                </Grid>
+                <Grid Grid.Column="4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0">
+                        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="坐标 X:" VerticalAlignment="Center"/>
+                        <TextBox Name="PositionX" IsEnabled="False" Height="22" Margin="30,0,0,0" TextWrapping="Wrap" Width="60"/>
+                    </Grid>
+                    <Grid Grid.Row="1">
+                        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="坐标 Y:" VerticalAlignment="Center"/>
+                        <TextBox Name="PositionY" IsEnabled="False" Height="22" Margin="30,0,0,0" TextWrapping="Wrap" VerticalAlignment="Center" Width="60"/>
+                    </Grid>
+                </Grid>
+                <Grid Grid.Column="5" Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Button Grid.Row="0"  Click="OnVertexSave">保存景点</Button>
+                    <TextBlock Foreground="Red" Grid.Row="1" Visibility="Hidden" VerticalAlignment="Center" FontStyle="Italic" HorizontalAlignment="Center" Name="PromptChange">
+                        更变无效
+                    </TextBlock>
+                    <Button Grid.Row="2"  Click="OnSaveEdge">保存道路</Button>
+                </Grid>
+
+            </Grid>
+            <Grid Grid.Row="1" Grid.Column="0" >
+                <Canvas Grid.Row="0" Grid.Column="0" Background="{StaticResource BgKey}" 
+                        Name="LTLCanvas" MouseRightButtonDown="Canvas_MouseRightButtonDown"
+                        PreviewMouseMove="Canvas_MouseMove"
+                        PreviewMouseLeftButtonDown="Canvas_MouseLeftDown"
+                        PreviewMouseUp="Canvas_MouseUp">
+                    <TextBlock Name="LinePrompt" Foreground="DarkRed" FontSize="15" Visibility="Hidden">
+                        请选择连线终点!
+                    </TextBlock>
+                </Canvas>
+            </Grid>
+            <Grid Grid.Row="2">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <TextBlock Name="Information" FontFamily="15" Margin="20,20,0,0" TextWrapping="Wrap" Text="信息展示区"/>
+                </ScrollViewer>
+            </Grid>
+        </Grid>
+        <Grid Grid.Row="0" Grid.Column="1" Name="ButtonGrid">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0" Grid.Column="0" FontSize="15" VerticalAlignment="Center" Margin="12,12,12,12">创建/更改景区布置信息</TextBlock>
+            <Button Grid.Row="1" Grid.Column="0" Margin="45,15,45,15" Click="OnTourGraph"
+                    AutomationProperties.HelpText="在建好的景区图的基础上显示导游图" Grid.ColumnSpan="2">
+                显示导游图
+            </Button>
+            <Button Grid.Row="2" Grid.Column="0" Margin="45,15,45,15" Click="OnLoopWay"
+                    AutomationProperties.HelpText="在导游图的基础上显示回路" Grid.ColumnSpan="2">
+                显示回路
+            </Button>
+            <Button Grid.Row="3" Grid.Column="0" Margin="45,15,45,15" Click="OnMiniDistance"
+                    AutomationProperties.HelpText="在景区信息的基础上根据输入显示两景点的最短路径" Grid.ColumnSpan="2">
+                景点间最短路径
+            </Button>
+            <Button Grid.Row="4" Grid.Column="0" Margin="45,15,45,15" Click="OnMiniSpanTree"
+                    AutomationProperties.HelpText="在景区信息已知的情况下最小连通图" Grid.ColumnSpan="2">
+                最小连通图
+            </Button>
+            <Button Grid.Row="5" Grid.Column="0" Margin="45,15,45,15" Click="OnSortByPopularity"
+                    AutomationProperties.HelpText="按热度排序，输入新的序列" Grid.ColumnSpan="2">
+                按热度排序
+            </Button>
+            <Button Grid.Row="6" Grid.Column="0" Margin="45,15,45,15" Click="OnKeySearch"
+                    AutomationProperties.HelpText="根据输入的关键词，输出相关信息" Grid.ColumnSpan="2">
+                按关键词搜索搜索
+            </Button>
+            <Button Grid.Row="7" Grid.Column="0" Margin="45,15,45,15" Click="OnParkingLot"
+                    AutomationProperties.HelpText="显示停车场的信息" Grid.ColumnSpan="2">
+                停车场管理
+            </Button>
+            <Grid Grid.Row="8">
+                <Label HorizontalAlignment="Left" VerticalAlignment="Center" Margin="40,0,0,0">起点:</Label>
+                <TextBox Name="startVertex" VerticalAlignment="Center" Margin="60,0,0,0" Width="80" Height="20"></TextBox>
+            </Grid>
+            <Grid Grid.Row="9">
+                <Label HorizontalAlignment="Left" VerticalAlignment="Center" Margin="40,0,0,0">终点:</Label>
+                <TextBox Name="endVertex" VerticalAlignment="Center" Margin="60,0,0,0" Width="80" Height="20"></TextBox>
+            </Grid>
+            <Grid Grid.Row="10">
+                <Label HorizontalAlignment="Left" VerticalAlignment="Center" Margin="30,0,0,0">关键字:</Label>
+                <TextBox Name="keyWord" VerticalAlignment="Center" Margin="60,0,0,0" Width="80" Height="20"></TextBox>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>

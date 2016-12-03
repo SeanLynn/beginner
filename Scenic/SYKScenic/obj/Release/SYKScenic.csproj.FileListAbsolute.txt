@@ -1,0 +1,17 @@
+C:\Users\neu_s\Documents\Visual Studio 2015\Projects\SYKScenic\bin\Release\SYKScenic.exe.config
+C:\Users\neu_s\Documents\Visual Studio 2015\Projects\SYKScenic\bin\Release\SYKScenic.exe
+C:\Users\neu_s\Documents\Visual Studio 2015\Projects\SYKScenic\bin\Release\SYKScenic.pdb
+C:\Users\neu_s\Documents\Visual Studio 2015\Projects\SYKScenic\obj\Release\MainWindow.g.cs
+C:\Users\neu_s\Documents\Visual Studio 2015\Projects\SYKScenic\obj\Release\ParkingLot.g.cs
+C:\Users\neu_s\Documents\Visual Studio 2015\Projects\SYKScenic\obj\Release\App.g.cs
+C:\Users\neu_s\Documents\Visual Studio 2015\Projects\SYKScenic\obj\Release\GeneratedInternalTypeHelper.g.cs
+C:\Users\neu_s\Documents\Visual Studio 2015\Projects\SYKScenic\obj\Release\SYKScenic_MarkupCompile.cache
+C:\Users\neu_s\Documents\Visual Studio 2015\Projects\SYKScenic\obj\Release\SYKScenic_MarkupCompile.lref
+C:\Users\neu_s\Documents\Visual Studio 2015\Projects\SYKScenic\obj\Release\App.baml
+C:\Users\neu_s\Documents\Visual Studio 2015\Projects\SYKScenic\obj\Release\MainWindow.baml
+C:\Users\neu_s\Documents\Visual Studio 2015\Projects\SYKScenic\obj\Release\ParkingLot.baml
+C:\Users\neu_s\Documents\Visual Studio 2015\Projects\SYKScenic\obj\Release\SYKScenic.g.resources
+C:\Users\neu_s\Documents\Visual Studio 2015\Projects\SYKScenic\obj\Release\SYKScenic.Properties.Resources.resources
+C:\Users\neu_s\Documents\Visual Studio 2015\Projects\SYKScenic\obj\Release\SYKScenic.csproj.GenerateResource.Cache
+C:\Users\neu_s\Documents\Visual Studio 2015\Projects\SYKScenic\obj\Release\SYKScenic.exe
+C:\Users\neu_s\Documents\Visual Studio 2015\Projects\SYKScenic\obj\Release\SYKScenic.pdb

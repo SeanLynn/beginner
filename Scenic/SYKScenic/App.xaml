@@ -1,0 +1,14 @@
+﻿<Application x:Class="SYKScenic.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:SYKScenic"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <LinearGradientBrush x:Key="BgKey" StartPoint="0,0" EndPoint="0,1">
+            <LinearGradientBrush.GradientStops>
+                <GradientStop Offset="0" Color="#dddddd" />
+                <GradientStop Offset="1" Color="#999999" />
+            </LinearGradientBrush.GradientStops>
+        </LinearGradientBrush>
+    </Application.Resources>
+</Application>
